@@ -57,7 +57,9 @@ Staða keppanda ræðst af reitunum:
 - `hio: true` → **hola í höggi**, deilir 1. sæti og kveikir gullna borðann efst.
 - `fjarlaegd` (metrar, tala) → raðast í vaxandi röð.
 - `ogilt: true` → högg tekið en telst ekki (vatn, út fyrir völl); birtist neðst án sætis.
-- hvorugt → keppandinn hefur ekki slegið og birtist **hvergi** á stigatöflunni.
+- `flot: true` → hitti flötina en var ekki mældur; birtist í **Hittu flötina** en ekki í stöðunni.
+  Mæling setur `flot` sjálfkrafa.
+- ekkert af þessu → keppandinn birtist **hvergi** á vefnum.
 
 Jafntefli á sömu fjarlægð deila sæti.
 
@@ -65,9 +67,9 @@ Jafntefli á sömu fjarlægð deila sæti.
 
 Þrjár aðskildar varnir:
 
-1. **Stigataflan** sýnir aðeins keppendur sem búið er að mæla. Engin „Á teig“ listi,
-   engin heildartala keppenda, og klúbbasían telur eingöngu mælda keppendur.
-2. **Birt gögn** (`data/stada.json`) innihalda eingöngu mælda keppendur. Ráslistinn er í
+1. **Stigataflan** sýnir aðeins keppendur sem eru mældir eða hittu flötina. Enginn ráslisti,
+   engin heildartala keppenda, og klúbbasían telur eingöngu þá sem birtast.
+2. **Birt gögn** (`data/stada.json`) innihalda eingöngu mælda keppendur og þá sem hittu flötina. Ráslistinn er í
    `local/raslisti.json` sem er í `.gitignore` og fer því aldrei í repo-ið.
 3. **GitHub Pages** birtir aðeins `index.html`, `assets/`, `config.js` og `data/stada.json`.
    `skra.html` er ekki birt, og workflow-ið stöðvar birtingu ef ráslisti kemst inn í möppuna.

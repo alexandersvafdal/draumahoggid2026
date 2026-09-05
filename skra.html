@@ -26,7 +26,8 @@
   <p class="err" id="err" hidden></p>
   <p class="hint">
     <b>Nr</b> er röð á teig. Sláðu inn fjarlægð frá holu í metrum (t.d. <b>3,42</b>) fyrir þá sem eru mældir.
-    Hakaðu við <b>HIH</b> fyrir holu í höggi og <b>Ógilt</b> ef höggið telst ekki (vatn, út fyrir völl).
+    Hakaðu við <b>Flöt</b> fyrir þá sem hittu flötina en voru ekki mældir, <b>HIH</b> fyrir holu í höggi
+    og <b>Ógilt</b> ef höggið telst ekki (vatn, út fyrir völl). Mæling setur flatarhakið sjálfkrafa.
     Auður reitur = ekkert skráð, og sá keppandi birtist <b>ekki</b> á stigatöflunni.
     Þegar þú vilt uppfæra vefinn: <b>Sækja stada.json</b> → settu í <code>data/</code> og pushaðu.
     Sú skrá inniheldur <b>eingöngu mælda keppendur</b>. Ráslistinn sjálfur fer aldrei á vefinn –
@@ -62,7 +63,7 @@
   </div>
 
   <div class="form"><table>
-    <thead><tr><th>Nr</th><th>Nafn</th><th>Klúbbur</th><th>Fjarlægð (m)</th><th>HIH</th><th>Ógilt</th><th>Tími</th><th>Athugasemd</th><th></th></tr></thead>
+    <thead><tr><th>Nr</th><th>Nafn</th><th>Klúbbur</th><th>Fjarlægð (m)</th><th>Flöt</th><th>HIH</th><th>Ógilt</th><th>Tími</th><th>Athugasemd</th><th></th></tr></thead>
     <tbody id="tbody"></tbody>
   </table></div>
 
@@ -90,12 +91,15 @@
     syna();
   }
 
-  var ÞEKKT = ["nr", "nafn", "klubbur", "fjoldi_hio", "varamadur", "hio", "ogilt", "fjarlaegd", "timi", "athugasemd"];
+  var ÞEKKT = ["nr", "nafn", "klubbur", "fjoldi_hio", "varamadur", "hio", "ogilt", "fjarlaegd", "flot", "timi", "athugasemd"];
 
   function maeldur(k) {
     return k.hio === true || k.ogilt === true ||
       (typeof k.fjarlaegd === "number" && isFinite(k.fjarlaegd));
   }
+
+  // Birt skrá tekur bæði mælda keppendur og þá sem hittu flötina.
+  function birtanlegur(k) { return maeldur(k) || k.flot === true; }
 
   // Full skrá: allur ráslistinn. Fer í local/raslisti.json og aldrei í git.
   function json() {
@@ -108,6 +112,7 @@
       if (k.hio === true) o.hio = true;
       else if (k.ogilt === true) o.ogilt = true;
       else if (typeof k.fjarlaegd === "number" && isFinite(k.fjarlaegd)) o.fjarlaegd = k.fjarlaegd;
+      if (k.flot === true) o.flot = true;
       if (k.timi) o.timi = k.timi;
       if (k.athugasemd) o.athugasemd = k.athugasemd;
       Object.keys(k).forEach(function (lykill) {
@@ -121,12 +126,13 @@
   // Birt skrá: aðeins mældir keppendur og aðeins þeir reitir sem stigataflan sýnir.
   function jsonBirt() {
     var ut = { meta: Object.assign({}, gogn.meta, { uppfaert: new Date().toISOString() }), keppendur: [] };
-    ut.keppendur = gogn.keppendur.filter(maeldur).map(function (k) {
+    ut.keppendur = gogn.keppendur.filter(birtanlegur).map(function (k) {
       var o = { nr: k.nr, nafn: k.nafn };
       if (k.klubbur) o.klubbur = k.klubbur;
       if (k.hio === true) o.hio = true;
       else if (k.ogilt === true) o.ogilt = true;
-      else o.fjarlaegd = k.fjarlaegd;
+      else if (typeof k.fjarlaegd === "number" && isFinite(k.fjarlaegd)) o.fjarlaegd = k.fjarlaegd;
+      if (k.flot === true) o.flot = true;
       if (k.timi) o.timi = k.timi;
       if (k.athugasemd) o.athugasemd = k.athugasemd;
       return o;
@@ -136,8 +142,9 @@
 
   function syna() {
     el("out").value = jsonBirt();
-    var n = gogn.keppendur.filter(maeldur).length;
-    el("birtfjoldi").textContent = n === 1 ? "1 mæling birt" : n + " mælingar birtar";
+    var m = gogn.keppendur.filter(maeldur).length;
+    var f = gogn.keppendur.filter(birtanlegur).length;
+    el("birtfjoldi").textContent = m + (m === 1 ? " mæling" : " mælingar") + ", " + f + " á flöt";
   }
 
   function tala(v) {
@@ -154,7 +161,7 @@
 
   function teikna() {
     if (!gogn.keppendur.length) {
-      el("tbody").innerHTML = '<tr><td colspan="9" style="padding:26px;text-align:center;color:var(--muted)">' +
+      el("tbody").innerHTML = '<tr><td colspan="10" style="padding:26px;text-align:center;color:var(--muted)">' +
         'Engir keppendur skráðir. Notaðu <b>＋ Bæta við keppanda</b> eða <b>☰ Líma inn nafnalista</b>.</td></tr>';
       syna();
       el("siatala").textContent = "0 keppendur";
@@ -167,6 +174,7 @@
         '<td style="width:110px"><input type="text" data-i="' + i + '" data-f="klubbur" value="' + esc(k.klubbur || "") + '"></td>' +
         '<td class="dist"><input type="text" inputmode="decimal" data-i="' + i + '" data-f="fjarlaegd" value="' +
           (typeof k.fjarlaegd === "number" ? String(k.fjarlaegd).replace(".", ",") : "") + '"></td>' +
+        '<td class="chk"><input type="checkbox" data-i="' + i + '" data-f="flot"' + (k.flot ? " checked" : "") + '></td>' +
         '<td class="chk"><input type="checkbox" data-i="' + i + '" data-f="hio"' + (k.hio ? " checked" : "") + '></td>' +
         '<td class="chk"><input type="checkbox" data-i="' + i + '" data-f="ogilt"' + (k.ogilt ? " checked" : "") + '></td>' +
         '<td style="width:86px"><input type="text" data-i="' + i + '" data-f="timi" value="' + esc(k.timi || "") + '"></td>' +
@@ -194,7 +202,14 @@
     var k = gogn.keppendur[+i];
     if (f === "fjarlaegd") {
       k.fjarlaegd = tala(t.value);
+      if (k.fjarlaegd !== null) {
+        k.flot = true;
+        var fbox = t.closest("tr").querySelector('[data-f="flot"]');
+        if (fbox) fbox.checked = true;
+      }
       if (k.fjarlaegd !== null && !k.timi) { k.timi = nuTimi(); t.closest("tr").querySelector('[data-f="timi"]').value = k.timi; }
+    } else if (f === "flot") {
+      k.flot = t.checked;
     } else if (f === "hio" || f === "ogilt") {
       k[f] = t.checked;
       if (t.checked) {

@@ -7,18 +7,25 @@ Notkun:
     python3 tools/birta.py 14 1.815        # sama, í metrum
     python3 tools/birta.py 22 hio          # hola í höggi
     python3 tools/birta.py 31 ogilt "Í vatn"
+    python3 tools/birta.py flot 3 5 7 17 29    # merkir að þessir hafi hitt flötina
+    python3 tools/birta.py afflot 5            # tekur flatarmerkinguna af
 
-Aðeins mældir keppendur rata í data/stada.json. Ráslistinn fer aldrei í git.
+Aðeins keppendur sem eru mældir eða hafa hitt flötina rata í data/stada.json.
+Ráslistinn fer aldrei í git.
 """
 import json, sys, os, datetime
 
 RAS = "local/raslisti.json"
 BIRT = "data/stada.json"
-BIRTIR_REITIR = ("nr", "nafn", "klubbur", "hio", "ogilt", "fjarlaegd", "timi", "athugasemd")
+BIRTIR_REITIR = ("nr", "nafn", "klubbur", "hio", "ogilt", "fjarlaegd", "flot", "timi", "athugasemd")
 
 
 def maeldur(k):
     return k.get("hio") is True or k.get("ogilt") is True or isinstance(k.get("fjarlaegd"), (int, float))
+
+
+def birtanlegur(k):
+    return maeldur(k) or k.get("flot") is True
 
 
 def i_metrum(texti):
@@ -36,6 +43,20 @@ def main():
     g = json.load(open(RAS, encoding="utf-8"))
 
     rok = sys.argv[1:]
+    if rok and rok[0].lower() in ("flot", "afflot"):
+        setja = rok[0].lower() == "flot"
+        eftir = {k.get("nr"): k for k in g["keppendur"]}
+        for texti in rok[1:]:
+            nr = int(texti)
+            k = eftir.get(nr)
+            if k is None:
+                sys.exit("Enginn keppandi með nr %d" % nr)
+            if setja:
+                k["flot"] = True
+            else:
+                k.pop("flot", None)
+            print("%s flöt: %d %s" % ("Merkt" if setja else "Afmerkt", nr, k["nafn"]))
+        rok = []
     if rok:
         nr = int(rok[0])
         keppandi = next((k for k in g["keppendur"] if k.get("nr") == nr), None)
@@ -53,6 +74,7 @@ def main():
             keppandi.pop("athugasemd", None)
         else:
             keppandi["fjarlaegd"] = i_metrum(rok[1])
+            keppandi["flot"] = True          # mæling þýðir að boltinn var á flötinni
         if len(rok) > 2:
             keppandi["athugasemd"] = rok[2]
         if gildi not in ("hreinsa", "clear"):
@@ -67,11 +89,13 @@ def main():
 
     birt = {"meta": g["meta"], "keppendur": []}
     for k in g["keppendur"]:
-        if maeldur(k):
+        if birtanlegur(k):
             birt["keppendur"].append({r: k[r] for r in BIRTIR_REITIR if r in k})
     json.dump(birt, open(BIRT, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     open(BIRT, "a", encoding="utf-8").write("\n")
-    print("%s: %d af %d keppendum mældir" % (BIRT, len(birt["keppendur"]), len(g["keppendur"])))
+    maeldir = sum(1 for k in birt["keppendur"] if maeldur(k))
+    print("%s: %d mældir, %d á flöt alls (af %d á ráslista)"
+          % (BIRT, maeldir, len(birt["keppendur"]), len(g["keppendur"])))
 
 
 if __name__ == "__main__":

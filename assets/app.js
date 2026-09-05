@@ -135,6 +135,10 @@
 
   function radad(keppendur) {
     var hio = [], lokid = [], ogilt = [], bidur = [];
+    var aFlot = keppendur.filter(function (k) {
+      return k.flot === true || k.hio === true ||
+        (typeof k.fjarlaegd === "number" && isFinite(k.fjarlaegd));
+    }).sort(function (a, b) { return (a.nr || 0) - (b.nr || 0); });
     keppendur.forEach(function (k) {
       var s = bunaKeppanda(k);
       k.__stada = s;
@@ -159,7 +163,8 @@
     ogilt.forEach(function (k) { k.__saeti = null; });
     bidur.forEach(function (k) { k.__saeti = null; });
 
-    return { hio: hio, lokid: lokid, ogilt: ogilt, bidur: bidur, spiladir: hio.concat(lokid, ogilt) };
+    return { hio: hio, lokid: lokid, ogilt: ogilt, bidur: bidur, flot: aFlot,
+             spiladir: hio.concat(lokid, ogilt) };
   }
 
   /* ---------------- teikning ---------------- */
@@ -257,6 +262,13 @@
     });
   }
 
+  function passarLeit(k) {
+    if (klubburVal && nrm(k.klubbur) !== nrm(klubburVal)) return false;
+    if (!leit) return true;
+    var hey = ((k.nafn || "") + " " + (k.klubbur || "")).toLowerCase();
+    return leit.split(/\s+/).filter(Boolean).every(function (w) { return hey.indexOf(w) >= 0; });
+  }
+
   function passar(k) {
     if (klubburVal && nrm(k.klubbur) !== nrm(klubburVal)) return false;
     if (sia === "hio" && k.__stada !== "hio") return false;
@@ -264,6 +276,17 @@
     if (!leit) return true;
     var hey = ((k.nafn || "") + " " + (k.klubbur || "") + " " + (k.athugasemd || "")).toLowerCase();
     return leit.split(/\s+/).filter(Boolean).every(function (w) { return hey.indexOf(w) >= 0; });
+  }
+
+  function radaFlot(k) {
+    var undir = [k.klubbur, k.timi ? "kl. " + k.timi : ""].filter(Boolean).map(esc).join(" · ");
+    var gildi = k.__stada === "hio" ? '<span class="val">HOLA Í HÖGGI</span>'
+      : k.__stada === "lokid" ? '<span class="val">' + nfM.format(k.fjarlaegd) + '<small>m</small></span>'
+      : '<span class="val omaeld">Á flöt</span>';
+    return '<div class="row' + (k.__stada === "hio" ? " hio" : "") + '">' +
+      '<div class="rk">' + (k.nr || "–") + '</div>' +
+      '<div><div class="n">' + esc(k.nafn) + '</div><div class="c">' + undir + '</div></div>' +
+      gildi + '</div>';
   }
 
   function rada(k, nyr) {
@@ -287,7 +310,7 @@
     teiknaHaus(m);
 
     var r = radad(keppendur);
-    fyllaKlubba(r.spiladir);
+    fyllaKlubba(r.flot);
     teiknaHio(r.hio);
     teiknaPall(r.spiladir);
     teiknaSiur(r);
@@ -311,13 +334,23 @@
           ? "Engar mælingar skráðar enn." : "Engin mæling fannst.") + '</p>';
     el("nres").textContent = syndir.length + (syndir.length !== r.spiladir.length ? " af " + r.spiladir.length : "");
 
+    var flotSyndir = r.flot.filter(passarLeit);
+    el("flotlist").innerHTML = flotSyndir.length
+      ? flotSyndir.map(radaFlot).join("")
+      : '<p class="empty">' + (r.flot.length === 0
+          ? "Enginn hefur hitt flötina enn." : "Enginn fannst.") + '</p>';
+    el("nflot").textContent = flotSyndir.length + (flotSyndir.length !== r.flot.length ? " af " + r.flot.length : "");
+
     var maeldir = r.spiladir.length;
     var bestur = r.hio.length ? r.hio[0] : (r.lokid[0] || null);
     el("count").innerHTML = maeldir === 0
-      ? "<span>Keppni er ekki hafin</span> <em>· staðan birtist jafnóðum og mælingar berast</em>"
+      ? (r.flot.length
+          ? "<span>" + r.flot.length + " á flöt</span> <em>· engin mæling skráð enn</em>"
+          : "<span>Keppni er ekki hafin</span> <em>· staðan birtist jafnóðum og mælingar berast</em>")
       : "<span>" + nf0.format(maeldir) + (maeldir === 1 ? " mæling skráð" : " mælingar skráðar") + "</span>" +
       (bestur ? ' <em>· efst/ur: ' + esc(bestur.nafn) + " – " +
         (bestur.__stada === "hio" ? "hola í höggi" : nfM.format(bestur.fjarlaegd) + " m") + "</em>" : "") +
+      (r.flot.length ? ' <em>· ' + r.flot.length + " á flöt</em>" : "") +
       (r.ogilt.length ? ' <em>· ' + r.ogilt.length +
         (r.ogilt.length === 1 ? " ógilt högg" : " ógild högg") + "</em>" : "");
 

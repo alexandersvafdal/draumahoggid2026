@@ -9,35 +9,87 @@
     "dagsetning": "2026-09-05",
     "verdlaun": "",
     "stada": "Í gangi",
-    "uppfaert": "2026-09-05T11:55:12+00:00"
+    "uppfaert": "2026-09-05T11:56:32+00:00"
   },
   "keppendur": [
+    {
+      "nr": 3,
+      "nafn": "Birkir Marinósson",
+      "klubbur": "Golfklúbbur Grindavíkur",
+      "flot": true
+    },
+    {
+      "nr": 5,
+      "nafn": "Brimar Þorleifsson",
+      "klubbur": "Golfklúbbur Reykjavíkur",
+      "flot": true
+    },
+    {
+      "nr": 7,
+      "nafn": "Brynjar Ólafsson",
+      "klubbur": "Golfklúbbur Suðurnesja",
+      "flot": true
+    },
     {
       "nr": 14,
       "nafn": "Gunnar Þór Ármannsson",
       "klubbur": "Golfklúbburinn Setberg",
       "fjarlaegd": 1.815,
+      "flot": true,
       "timi": "11:16"
+    },
+    {
+      "nr": 17,
+      "nafn": "Ellert Berg Guðjónsson",
+      "klubbur": "Golfklúbbur Mosfellsbæjar",
+      "flot": true
     },
     {
       "nr": 24,
       "nafn": "Anna Snædís Sigmarsdóttir",
       "klubbur": "Golfklúbburinn Keilir",
       "fjarlaegd": 1.97,
+      "flot": true,
       "timi": "11:22"
+    },
+    {
+      "nr": 29,
+      "nafn": "Linda Björk Bergsveinsdóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur",
+      "flot": true
     },
     {
       "nr": 39,
       "nafn": "Sigurður Hafsteinsson",
       "klubbur": "Golfklúbbur Reykjavíkur",
       "fjarlaegd": 3.27,
+      "flot": true,
       "timi": "11:32"
+    },
+    {
+      "nr": 47,
+      "nafn": "Ármann Viðar Sigurðsson",
+      "klubbur": "Golfklúbbur Fjallabyggðar",
+      "flot": true
+    },
+    {
+      "nr": 53,
+      "nafn": "Jóhann Adolf Oddgeirsson",
+      "klubbur": "Golfklúbburinn Keilir",
+      "flot": true
+    },
+    {
+      "nr": 64,
+      "nafn": "Birgir Hrafn Sæmundsson",
+      "klubbur": "Golfklúbbur Mosfellsbæjar",
+      "flot": true
     },
     {
       "nr": 69,
       "nafn": "Ásgeir Þór Árnason",
       "klubbur": "Golfklúbburinn Setberg",
       "fjarlaegd": 1.94,
+      "flot": true,
       "timi": "11:55"
     }
   ]
