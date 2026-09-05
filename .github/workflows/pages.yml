@@ -22,9 +22,30 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
+      # Aðeins þessar skrár fara á vefinn. Skráningarsíðan (skra.html) og
+      # ráslistinn eru vísvitandi ekki birt.
+      - name: Setja saman birtingarmöppu
+        run: |
+          mkdir -p _site/data
+          cp index.html config.js .nojekyll _site/
+          cp -r assets _site/
+          cp data/stada.json _site/data/
+          echo "--- birt skjöl ---"
+          find _site -type f | sort
+
+      - name: Staðfesta að ráslistinn sé hvergi í birtu efninu
+        run: |
+          if [ -e _site/skra.html ] || [ -e _site/data/keppni.json ] || [ -e _site/local ]; then
+            echo "VILLA: skráningarsíða eða ráslisti komst inn í birtingarmöppuna"; exit 1
+          fi
+          if grep -rqi "raslisti" _site; then
+            echo "VILLA: tilvísun í ráslista í birtu efni"; exit 1
+          fi
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

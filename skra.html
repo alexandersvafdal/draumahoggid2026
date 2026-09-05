@@ -28,14 +28,17 @@
     <b>Nr</b> er röð á teig. Sláðu inn fjarlægð frá holu í metrum (t.d. <b>3,42</b>) fyrir þá sem eru mældir.
     Hakaðu við <b>HIH</b> fyrir holu í höggi og <b>Ógilt</b> ef höggið telst ekki (vatn, út fyrir völl).
     Auður reitur = ekkert skráð, og sá keppandi birtist <b>ekki</b> á stigatöflunni.
-    Ýttu svo á <b>Sækja keppni.json</b> og settu skrána í <code>data/</code> í repo-inu.
+    Þegar þú vilt uppfæra vefinn: <b>Sækja stada.json</b> → settu í <code>data/</code> og pushaðu.
+    Sú skrá inniheldur <b>eingöngu mælda keppendur</b>. Ráslistinn sjálfur fer aldrei á vefinn –
+    hann er geymdur í <code>local/raslisti.json</code> sem er utan git.
   </p>
 
   <div class="actions">
     <button class="pfbtn" id="add" type="button">＋ Bæta við keppanda</button>
     <button class="pfbtn" id="paste" type="button">☰ Líma inn nafnalista</button>
-    <button class="pfbtn" id="dl" type="button">⬇ Sækja keppni.json</button>
-    <button class="pfbtn" id="copy" type="button">⧉ Afrita JSON</button>
+    <button class="pfbtn" id="dlpub" type="button">⬇ Sækja stada.json (birt)</button>
+    <button class="pfbtn" id="dl" type="button">⬇ Sækja raslisti.json (einka)</button>
+    <button class="pfbtn" id="copy" type="button">⧉ Afrita birta JSON</button>
     <button class="pfbtn" id="reload" type="button">↻ Sækja aftur af vef</button>
     <button class="pfbtn" id="clear" type="button">✕ Hreinsa staðbundnar breytingar</button>
   </div>
@@ -63,8 +66,9 @@
     <tbody id="tbody"></tbody>
   </table></div>
 
+  <p class="hint" style="margin:0 0 8px"><b>Birt skrá</b> (<code>data/stada.json</code>) – <span id="birtfjoldi"></span>:</p>
   <textarea class="out" id="out" spellcheck="false" readonly></textarea>
-  <p class="note">Breytingar geymast í <code>localStorage</code> í þessum vafra. Stigataflan les <code>data/keppni.json</code> – hún breytist ekki fyrr en skráin er uppfærð í repo-inu.</p>
+  <p class="note">Þessi síða er <b>ekki birt á vefnum</b> – hún er ekki hluti af GitHub Pages útgáfunni og keyrist aðeins staðbundið. Breytingar geymast í <code>localStorage</code> í þessum vafra. Stigataflan les <code>data/stada.json</code> og breytist ekki fyrr en sú skrá er uppfærð í repo-inu.</p>
 </div>
 
 <script src="config.js"></script>
@@ -86,9 +90,16 @@
     syna();
   }
 
+  var ÞEKKT = ["nr", "nafn", "klubbur", "fjoldi_hio", "varamadur", "hio", "ogilt", "fjarlaegd", "timi", "athugasemd"];
+
+  function maeldur(k) {
+    return k.hio === true || k.ogilt === true ||
+      (typeof k.fjarlaegd === "number" && isFinite(k.fjarlaegd));
+  }
+
+  // Full skrá: allur ráslistinn. Fer í local/raslisti.json og aldrei í git.
   function json() {
     var ut = { meta: Object.assign({}, gogn.meta, { uppfaert: new Date().toISOString() }), keppendur: [] };
-    var þekkt = ["nr", "nafn", "klubbur", "fjoldi_hio", "varamadur", "hio", "ogilt", "fjarlaegd", "timi", "athugasemd"];
     ut.keppendur = gogn.keppendur.map(function (k) {
       var o = { nr: k.nr, nafn: k.nafn };
       if (k.klubbur) o.klubbur = k.klubbur;
@@ -99,16 +110,35 @@
       else if (typeof k.fjarlaegd === "number" && isFinite(k.fjarlaegd)) o.fjarlaegd = k.fjarlaegd;
       if (k.timi) o.timi = k.timi;
       if (k.athugasemd) o.athugasemd = k.athugasemd;
-      // varðveitir alla aðra reiti sem kunna að vera í skránni
       Object.keys(k).forEach(function (lykill) {
-        if (þekkt.indexOf(lykill) < 0 && lykill.indexOf("__") !== 0) o[lykill] = k[lykill];
+        if (ÞEKKT.indexOf(lykill) < 0 && lykill.indexOf("__") !== 0) o[lykill] = k[lykill];
       });
       return o;
     });
     return JSON.stringify(ut, null, 2) + "\n";
   }
 
-  function syna() { el("out").value = json(); }
+  // Birt skrá: aðeins mældir keppendur og aðeins þeir reitir sem stigataflan sýnir.
+  function jsonBirt() {
+    var ut = { meta: Object.assign({}, gogn.meta, { uppfaert: new Date().toISOString() }), keppendur: [] };
+    ut.keppendur = gogn.keppendur.filter(maeldur).map(function (k) {
+      var o = { nr: k.nr, nafn: k.nafn };
+      if (k.klubbur) o.klubbur = k.klubbur;
+      if (k.hio === true) o.hio = true;
+      else if (k.ogilt === true) o.ogilt = true;
+      else o.fjarlaegd = k.fjarlaegd;
+      if (k.timi) o.timi = k.timi;
+      if (k.athugasemd) o.athugasemd = k.athugasemd;
+      return o;
+    });
+    return JSON.stringify(ut, null, 2) + "\n";
+  }
+
+  function syna() {
+    el("out").value = jsonBirt();
+    var n = gogn.keppendur.filter(maeldur).length;
+    el("birtfjoldi").textContent = n === 1 ? "1 mæling birt" : n + " mælingar birtar";
+  }
 
   function tala(v) {
     var s = String(v == null ? "" : v).trim().replace(",", ".");
@@ -248,17 +278,19 @@
   el("pasteadd").onclick = function () { limaInn(false); };
   el("pastereplace").onclick = function () { limaInn(true); };
 
-  el("dl").onclick = function () {
-    var b = new Blob([json()], { type: "application/json" });
+  function saekja(efni, nafn) {
+    var b = new Blob([efni], { type: "application/json" });
     var a = document.createElement("a");
-    a.href = URL.createObjectURL(b); a.download = "keppni.json";
+    a.href = URL.createObjectURL(b); a.download = nafn;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-  };
+  }
+  el("dl").onclick = function () { saekja(json(), "raslisti.json"); };
+  el("dlpub").onclick = function () { saekja(jsonBirt(), "stada.json"); };
   el("copy").onclick = function () {
     el("out").removeAttribute("readonly"); el("out").select();
     try { document.execCommand("copy"); } catch (e) {}
-    if (navigator.clipboard) navigator.clipboard.writeText(json());
+    if (navigator.clipboard) navigator.clipboard.writeText(jsonBirt());
     el("out").setAttribute("readonly", "");
     el("copy").textContent = "✓ Afritað";
     setTimeout(function () { el("copy").textContent = "⧉ Afrita JSON"; }, 1500);
@@ -277,12 +309,12 @@
         if (vistad) { gogn = JSON.parse(vistad); teikna(); return; }
       } catch (e) {}
     }
-    fetch("data/keppni.json?t=" + Date.now(), { cache: "no-store" })
+    fetch("local/raslisti.json?t=" + Date.now(), { cache: "no-store" })
       .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
       .then(function (g) { gogn = g; gogn.keppendur = gogn.keppendur || []; teikna(); vista(); })
       .catch(function (e) {
         el("err").hidden = false;
-        el("err").textContent = "Náði ekki í data/keppni.json (" + e.message + "). Opnaðu síðuna í gegnum vefþjón, ekki file://.";
+        el("err").textContent = "Náði ekki í local/raslisti.json (" + e.message + "). Keyrðu síðuna í gegnum vefþjón (python3 -m http.server), ekki file://.";
       });
   }
 

@@ -10,7 +10,7 @@
    meta             Notað þegar gagnaslod er CSV (JSON-skráin ber sína eigin meta).
 */
 window.DRAUMAHOGG_CONFIG = {
-  gagnaslod: "data/keppni.json",
+  gagnaslod: "data/stada.json",
   uppfaerslutidni: 15000,
   merki: "https://www.golf.is/wp-content/uploads/2025/08/Einherjaklubburinn_logo-01-400x.png",
 

@@ -1,7 +1,7 @@
 # Draumahöggið 2026
 
 Lifandi stigatafla fyrir Draumahöggið – hver keppandi fær **eitt högg** á par 3 holu.
-Sá sem er næst holu leiðir; hola í höggi tekur allt.
+Mældar fjarlægðir frá holu raðast í vaxandi röð; hola í höggi fer efst.
 
 Kyrrstæð vefsíða (HTML/CSS/JS, engir pakkar, ekkert byggingarskref). Þemað fylgir vef
 Einherjaklúbbsins: Poppins, grænt `#0a5e34`, gullnir hápunktar, hvít spjöld með 16px hornum.
@@ -11,9 +11,11 @@ Einherjaklúbbsins: Poppins, grænt `#0a5e34`, gullnir hápunktar, hvít spjöld
 | Skrá | Hlutverk |
 | --- | --- |
 | `index.html` | Stigataflan – uppfærist sjálfkrafa |
-| `skra.html` | Skráningarform fyrir ritara, býr til `keppni.json` |
+| `skra.html` | Skráningarform fyrir ritara – **ekki birt á vefnum**, keyrist staðbundið |
 | `config.js` | Gagnaslóð, uppfærslutíðni, merki, meta fyrir CSV |
-| `data/keppni.json` | Ráslisti og mælingar (247 keppendur, þar af 111 með röð á teig) |
+| `data/stada.json` | **Birt gögn** – lýsigögn og eingöngu mældir keppendur |
+| `local/raslisti.json` | Ráslistinn (247 nöfn) – **utan git**, fer hvorki á GitHub né vefinn |
+| `assets/qr.svg`, `assets/qr.png` | QR-kóði á vefslóð stigatöflunnar |
 | `assets/style.css`, `assets/app.js` | Útlit og rökfræði |
 
 ## Keyra staðbundið
@@ -59,15 +61,18 @@ Staða keppanda ræðst af reitunum:
 
 Jafntefli á sömu fjarlægð deila sæti.
 
-### Ráslistinn er ekki birtur
+### Ráslistinn er hvorki birtur né aðgengilegur
 
-Stigataflan sýnir **aðeins keppendur sem búið er að mæla**. Þeir sem eiga eftir að slá birtast hvergi –
-ekkert „Á teig“ spjald, engin heildartala keppenda, og klúbbasían telur eingöngu mælda keppendur.
-Ráslistinn er samt í `data/keppni.json` svo skráningarsíðan finni alla.
+Þrjár aðskildar varnir:
 
-> Athugið: repo-ið er **opið (public)**, svo `data/keppni.json` er sótt af hverjum sem er þótt nöfnin
-> birtist ekki á síðunni. Ef ráslistinn á ekki að vera aðgengilegur þarf annaðhvort að gera repo-ið
-> private eða halda ráslistanum utan þess (t.d. aðeins í `localStorage` skráningarsíðunnar).
+1. **Stigataflan** sýnir aðeins keppendur sem búið er að mæla. Engin „Á teig“ listi,
+   engin heildartala keppenda, og klúbbasían telur eingöngu mælda keppendur.
+2. **Birt gögn** (`data/stada.json`) innihalda eingöngu mælda keppendur. Ráslistinn er í
+   `local/raslisti.json` sem er í `.gitignore` og fer því aldrei í repo-ið.
+3. **GitHub Pages** birtir aðeins `index.html`, `assets/`, `config.js` og `data/stada.json`.
+   `skra.html` er ekki birt, og workflow-ið stöðvar birtingu ef ráslisti kemst inn í möppuna.
+
+Skráningarsíðan keyrist því aðeins staðbundið (`python3 -m http.server`) og er hvergi til á vefslóð.
 
 ## Að uppfæra stöðuna meðan á keppni stendur
 
@@ -75,7 +80,10 @@ Ráslistinn er samt í `data/keppni.json` svo skráningarsíðan finni alla.
 
 1. Notaðu **síureitinn** til að finna keppanda (nafn, klúbbur eða númer) – listinn er 247 nöfn.
 2. Sláðu inn fjarlægð í metrum. Tími fyllist sjálfkrafa við fyrstu skráningu.
-3. **⬇ Sækja keppni.json**, settu skrána yfir `data/keppni.json`, committaðu og pushaðu.
+3. **⬇ Sækja stada.json (birt)** → settu yfir `data/stada.json`, committaðu og pushaðu.
+   Sú skrá inniheldur eingöngu mælda keppendur.
+4. **⬇ Sækja raslisti.json (einka)** → settu yfir `local/raslisti.json` til að geyma vinnuna
+   þína. Sú skrá fer aldrei í git.
 
 **☰ Líma inn nafnalista** bætir við eða skiptir út öllum keppendum (eitt nafn í línu, `Nafn, Klúbbur`).
 
@@ -96,7 +104,8 @@ Athugið: Google birtir uppfærslur á CSV með nokkurra mínútna töf.
 
 ## Birting á GitHub Pages
 
-Workflow-ið `.github/workflows/pages.yml` birtir rótina við hvert push á `main`.
+Workflow-ið `.github/workflows/pages.yml` setur saman birtingarmöppu úr `index.html`,
+`assets/`, `config.js` og `data/stada.json` við hvert push á `main` – ekkert annað fer á vefinn.
 Kveiktu einu sinni á Pages: **Settings → Pages → Source: GitHub Actions**.
 Síðan verður á `https://alexandersvafdal.github.io/draumahoggid2026/`.
 
@@ -104,3 +113,9 @@ Síðan verður á `https://alexandersvafdal.github.io/draumahoggid2026/`.
 
 `config.js` vísar sjálfgefið á merki Einherjaklúbbsins á golf.is. Settu `merki: ""` til að fela það,
 eða settu eigin mynd í `assets/` og vísaðu á hana.
+
+## QR-kóði
+
+`assets/qr.svg` (vektor, fyrir prentun) og `assets/qr.png` (588×588 px) vísa á
+`https://alexandersvafdal.github.io/draumahoggid2026/`. Útgáfa 6, villuleiðréttingarstig H
+(þolir 30% skemmd) – óhætt að prenta á skilti úti á velli.

@@ -1,5 +1,5 @@
 /* Draumahöggið – lifandi stigatafla
-   Eitt högg á hvern keppanda. Sá sem er næst holu leiðir; hola í höggi tekur allt. */
+   Eitt högg á hvern keppanda. */
 (function () {
   "use strict";
 
@@ -321,7 +321,7 @@
 
     var uppf = m.uppfaert ? new Date(m.uppfaert) : null;
     el("foot").innerHTML =
-      "Draumahöggið · hver keppandi fær eitt högg. Sá sem er næst holu leiðir; hola í höggi tekur allt." +
+      "Draumahöggið · hver keppandi fær eitt högg." +
       (uppf && !isNaN(uppf) ? " Gögn síðast merkt uppfærð " + dagsTimi(uppf) + "." : "") +
       " Síðan uppfærist sjálfkrafa á " + Math.round(TIDNI / 1000) + " sek. fresti.";
   }
