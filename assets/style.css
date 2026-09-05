@@ -84,8 +84,8 @@ body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink);line
 .count em{font-style:normal;font-weight:500;color:var(--muted)}
 
 /* ---------- töflur ---------- */
-.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start}
-@media(max-width:900px){.layout{grid-template-columns:1fr}}
+/* Staðan efst, "Hittu flötina" alltaf fyrir neðan hana. */
+.layout{display:grid;grid-template-columns:1fr;gap:20px;align-items:start}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
 .panel>h2{margin:0;padding:14px 16px;font-size:13px;font-weight:600;color:var(--brand);text-transform:uppercase;
   letter-spacing:.5px;border-bottom:1px solid var(--line);background:var(--brand-tint2);display:flex;gap:8px;align-items:center}
@@ -111,7 +111,9 @@ body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink);line
 .tag.t-hio{background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-bd)}
 .tag.t-ogilt{background:var(--live-bg);color:var(--live);border:1px solid var(--live-bd)}
 .tag.t-ny{background:var(--brand-tint);color:var(--brand-dark);border:1px solid #cfe3d5}
+.panel.flot{margin-top:0}
 .flot .row .rk{font-size:12.5px;font-weight:600;color:var(--muted)}
+.flot .scroll{max-height:56vh}
 .flot .row .val{font-size:15px;font-weight:700}
 .val.omaeld{font-size:11px;font-weight:700;color:var(--brand-dark);background:var(--brand-tint);
   border:1px solid #cfe3d5;border-radius:20px;padding:2px 9px;text-transform:uppercase;letter-spacing:.3px}
