@@ -9,7 +9,7 @@
     "dagsetning": "2026-09-05",
     "verdlaun": "",
     "stada": "Í gangi",
-    "uppfaert": "2026-09-05T12:21:23+00:00"
+    "uppfaert": "2026-09-05T12:22:12+00:00"
   },
   "keppendur": [
     {
@@ -142,6 +142,12 @@
       "nr": 108,
       "nafn": "Gunnar Andri Þórisson",
       "klubbur": "Golfklúbburinn Keilir",
+      "flot": true
+    },
+    {
+      "nr": 110,
+      "nafn": "Jóna Elísabet Jónsdóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur",
       "flot": true
     }
   ]
