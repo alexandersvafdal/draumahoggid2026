@@ -13,7 +13,7 @@ Einherjaklúbbsins: Poppins, grænt `#0a5e34`, gullnir hápunktar, hvít spjöld
 | `index.html` | Stigataflan – uppfærist sjálfkrafa |
 | `skra.html` | Skráningarform fyrir ritara, býr til `keppni.json` |
 | `config.js` | Gagnaslóð, uppfærslutíðni, merki, meta fyrir CSV |
-| `data/keppni.json` | Gögn keppninnar (**sýnigögn núna – skiptu þeim út**) |
+| `data/keppni.json` | Gögn keppninnar (**tómt – bættu keppendum við**) |
 | `assets/style.css`, `assets/app.js` | Útlit og rökfræði |
 
 ## Keyra staðbundið
@@ -33,7 +33,7 @@ Opnaðu svo `http://localhost:8080/`. (`file://` virkar ekki – `fetch` á JSON
     "undirtitill": "Eitt högg. Eitt tækifæri.",
     "vollur": "Nesvöllur, Seltjarnarnesi",
     "hola": 9, "par": 3, "lengd_m": 132,
-    "dagsetning": "2026-06-13",
+    "dagsetning": "2026-09-05",
     "verdlaun": "Bíll frá styrktaraðila fyrir holu í höggi",
     "stada": "Í gangi",
     "uppfaert": "2026-06-13T14:12:00+00:00"
@@ -58,9 +58,14 @@ Jafntefli á sömu fjarlægð deila sæti.
 
 ## Að uppfæra stöðuna meðan á keppni stendur
 
-**Leið A – skráningarformið (einfaldast).** Opnaðu `skra.html`, sláðu inn fjarlægðir jafnóðum,
-smelltu á **Sækja keppni.json**, settu skrána yfir `data/keppni.json` og pushaðu. Allir opnir
-vafrar taka breytinguna upp innan `uppfaerslutidni` (sjálfgefið 15 sek.) án þess að endurhlaða þurfi.
+**Leið A – skráningarformið (einfaldast).** Opnaðu `skra.html`:
+
+1. **☰ Líma inn nafnalista** – límdu keppendur inn, eitt nafn í línu (`Nafn, Klúbbur`), til að byggja upp ráslistann.
+2. Sláðu inn fjarlægðir jafnóðum meðan keppnin stendur yfir. Tími fyllist sjálfkrafa við fyrstu skráningu.
+3. **⬇ Sækja keppni.json**, settu skrána yfir `data/keppni.json`, committaðu og pushaðu.
+
+Allir opnir vafrar taka breytinguna upp innan `uppfaerslutidni` (sjálfgefið 15 sek.) án þess að endurhlaða þurfi.
+Breytingar í forminu geymast í `localStorage` þar til þú sækir skrána – lokaður flipi tapar þeim ekki.
 
 **Leið B – Google Sheets (uppfærist án commit).** Í Google Sheets: `Skrá → Deila → Birta á vefnum → CSV`.
 Settu slóðina í `config.js`:

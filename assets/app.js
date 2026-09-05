@@ -210,6 +210,7 @@
 
   function teiknaPall(spiladir) {
     var topp = spiladir.filter(function (k) { return k.__saeti; }).slice(0, 3);
+    el("podium").hidden = topp.length === 0;
     el("podium").innerHTML = topp.map(function (k, i) {
       return '<div class="pod p' + (i + 1) + '">' +
         '<span class="rk">' + k.__saeti + '</span>' +
@@ -301,20 +302,24 @@
     var syndir = r.spiladir.filter(passar);
     var bidur = r.bidur.filter(passar);
 
+    var enginnSkradur = keppendur.length === 0;
     el("list").innerHTML = syndir.length
       ? syndir.map(function (k) { return rada(k, !!nyir[k.nr]); }).join("")
-      : '<p class="empty">Engin skráning fannst.</p>';
+      : '<p class="empty">' + (enginnSkradur ? "Engir keppendur skráðir enn."
+        : r.spiladir.length === 0 ? "Enginn búinn að slá enn." : "Engin skráning fannst.") + '</p>';
     el("waitlist").innerHTML = bidur.length
       ? bidur.map(function (k) { return rada(k, false); }).join("")
-      : '<p class="empty">Allir búnir að slá.</p>';
+      : '<p class="empty">' + (enginnSkradur ? "Engir keppendur skráðir enn."
+        : r.bidur.length === 0 ? "Allir búnir að slá." : "Engin skráning fannst.") + '</p>';
 
     el("nres").textContent = syndir.length + (syndir.length !== r.spiladir.length ? " af " + r.spiladir.length : "");
     el("nwait").textContent = bidur.length + (bidur.length !== r.bidur.length ? " af " + r.bidur.length : "");
 
     var alls = keppendur.length, bunir = r.spiladir.length;
     var bestur = r.hio.length ? r.hio[0] : (r.lokid[0] || null);
-    el("count").innerHTML =
-      "<span>" + nf0.format(bunir) + " af " + nf0.format(alls) + " búnir að slá</span>" +
+    el("count").innerHTML = alls === 0
+      ? "<span>Engir keppendur skráðir enn</span> <em>· bættu þeim við í <code>data/keppni.json</code> eða á skráningarsíðunni</em>"
+      : "<span>" + nf0.format(bunir) + " af " + nf0.format(alls) + " búnir að slá</span>" +
       (bestur ? ' <em>· efst/ur: ' + esc(bestur.nafn) + " – " +
         (bestur.__stada === "hio" ? "hola í höggi" : nfM.format(bestur.fjarlaegd) + " m") + "</em>" : "") +
       (r.ogilt.length ? ' <em>· ' + r.ogilt.length + " ógild"+(r.ogilt.length===1?"t":"") + "</em>" : "");

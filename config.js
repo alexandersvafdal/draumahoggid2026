@@ -21,8 +21,8 @@ window.DRAUMAHOGG_CONFIG = {
     hola: 9,
     par: 3,
     lengd_m: null,
-    dagsetning: "2026-06-13",
-    verdlaun: "Bíll frá styrktaraðila fyrir holu í höggi",
+    dagsetning: "2026-09-05",
+    verdlaun: "",
     stada: "Í gangi"
   }
 };

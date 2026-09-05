@@ -132,6 +132,9 @@ a{color:var(--brand)}
 .form input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-tint)}
 .form input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand)}
 .form td.num{width:52px;color:var(--muted);font-weight:600}
+.form button.del{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--muted);
+  font-size:13px;line-height:1;cursor:pointer;font-family:inherit;transition:background .12s,color .12s,border-color .12s}
+.form button.del:hover{background:var(--live-bg);border-color:var(--live-bd);color:var(--live)}
 .form td.dist{width:120px} .form td.chk{width:64px;text-align:center} .form td.note{width:170px}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px}
 .out{width:100%;min-height:220px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;

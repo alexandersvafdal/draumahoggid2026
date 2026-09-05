@@ -31,14 +31,29 @@
   </p>
 
   <div class="actions">
+    <button class="pfbtn" id="add" type="button">＋ Bæta við keppanda</button>
+    <button class="pfbtn" id="paste" type="button">☰ Líma inn nafnalista</button>
     <button class="pfbtn" id="dl" type="button">⬇ Sækja keppni.json</button>
     <button class="pfbtn" id="copy" type="button">⧉ Afrita JSON</button>
     <button class="pfbtn" id="reload" type="button">↻ Sækja aftur af vef</button>
     <button class="pfbtn" id="clear" type="button">✕ Hreinsa staðbundnar breytingar</button>
   </div>
 
+  <div class="form" id="pastebox" hidden style="padding:14px 16px">
+    <p class="hint" style="margin:0 0 10px">
+      Eitt nafn í línu. Klúbbur má fylgja á eftir kommu eða tvípunkti – t.d. <code>Anna Jónsdóttir, GR</code>.
+    </p>
+    <textarea class="out" id="pastetxt" style="min-height:150px" spellcheck="false"
+      placeholder="Anna Kristín Jónsdóttir, GR&#10;Bjarni Þór Sigurðsson, GKG&#10;Elín Ósk Hafsteinsdóttir, GNes"></textarea>
+    <div class="actions" style="margin:12px 0 0">
+      <button class="pfbtn" id="pasteadd" type="button">Bæta við listann</button>
+      <button class="pfbtn" id="pastereplace" type="button">Skipta út öllum keppendum</button>
+      <button class="pfbtn" id="pastecancel" type="button">Hætta við</button>
+    </div>
+  </div>
+
   <div class="form"><table>
-    <thead><tr><th>Nr</th><th>Nafn</th><th>Klúbbur</th><th>Fjarlægð (m)</th><th>HIH</th><th>Ógilt</th><th>Tími</th><th>Athugasemd</th></tr></thead>
+    <thead><tr><th>Nr</th><th>Nafn</th><th>Klúbbur</th><th>Fjarlægð (m)</th><th>HIH</th><th>Ógilt</th><th>Tími</th><th>Athugasemd</th><th></th></tr></thead>
     <tbody id="tbody"></tbody>
   </table></div>
 
@@ -95,6 +110,12 @@
   }
 
   function teikna() {
+    if (!gogn.keppendur.length) {
+      el("tbody").innerHTML = '<tr><td colspan="9" style="padding:26px;text-align:center;color:var(--muted)">' +
+        'Engir keppendur skráðir. Notaðu <b>＋ Bæta við keppanda</b> eða <b>☰ Líma inn nafnalista</b>.</td></tr>';
+      syna();
+      return;
+    }
     el("tbody").innerHTML = gogn.keppendur.map(function (k, i) {
       return '<tr>' +
         '<td class="num">' + (k.nr || i + 1) + '</td>' +
@@ -106,9 +127,15 @@
         '<td class="chk"><input type="checkbox" data-i="' + i + '" data-f="ogilt"' + (k.ogilt ? " checked" : "") + '></td>' +
         '<td style="width:86px"><input type="text" data-i="' + i + '" data-f="timi" value="' + esc(k.timi || "") + '"></td>' +
         '<td class="note"><input type="text" data-i="' + i + '" data-f="athugasemd" value="' + esc(k.athugasemd || "") + '"></td>' +
+        '<td style="width:40px;text-align:center"><button type="button" class="del" data-del="' + i +
+          '" title="Eyða keppanda" aria-label="Eyða keppanda">✕</button></td>' +
         '</tr>';
     }).join("");
     syna();
+  }
+
+  function endurnumera() {
+    gogn.keppendur.forEach(function (k, i) { k.nr = i + 1; });
   }
 
   el("tbody").addEventListener("input", function (e) {
@@ -132,6 +159,57 @@
     }
     vista();
   });
+
+  el("tbody").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-del]");
+    if (!b) return;
+    var i = +b.getAttribute("data-del");
+    var k = gogn.keppendur[i];
+    if (!confirm("Eyða " + (k.nafn || "keppanda nr. " + k.nr) + " af listanum?")) return;
+    gogn.keppendur.splice(i, 1);
+    endurnumera();
+    teikna();
+    vista();
+  });
+
+  el("add").onclick = function () {
+    gogn.keppendur.push({ nr: gogn.keppendur.length + 1, nafn: "", klubbur: "" });
+    teikna();
+    vista();
+    var raðir = el("tbody").querySelectorAll('[data-f="nafn"]');
+    if (raðir.length) raðir[raðir.length - 1].focus();
+  };
+
+  function lesaLista(txt) {
+    return txt.split("\n").map(function (lina) {
+      var s = lina.trim();
+      if (!s) return null;
+      var m = s.match(/^(.*?)\s*[,;:\t]\s*(.+)$/);
+      return m ? { nafn: m[1].trim(), klubbur: m[2].trim() } : { nafn: s, klubbur: "" };
+    }).filter(function (x) { return x && x.nafn; });
+  }
+
+  el("paste").onclick = function () {
+    var b = el("pastebox");
+    b.hidden = !b.hidden;
+    if (!b.hidden) el("pastetxt").focus();
+  };
+  el("pastecancel").onclick = function () { el("pastebox").hidden = true; el("pastetxt").value = ""; };
+  function limaInn(skiptaUt) {
+    var nyir = lesaLista(el("pastetxt").value);
+    if (!nyir.length) { alert("Engin nöfn fundust."); return; }
+    if (skiptaUt && gogn.keppendur.length &&
+        !confirm("Skipta út öllum " + gogn.keppendur.length + " keppendum fyrir " + nyir.length + " ný nöfn?")) return;
+    if (skiptaUt) gogn.keppendur = [];
+    nyir.forEach(function (n) { gogn.keppendur.push({ nr: 0, nafn: n.nafn, klubbur: n.klubbur }); });
+    endurnumera();
+    el("pastetxt").value = "";
+    el("pastebox").hidden = true;
+    teikna();
+    vista();
+  }
+  el("pasteadd").onclick = function () { limaInn(false); };
+  el("pastereplace").onclick = function () { limaInn(true); };
 
   el("dl").onclick = function () {
     var b = new Blob([json()], { type: "application/json" });
