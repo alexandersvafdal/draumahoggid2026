@@ -9,7 +9,7 @@
     "dagsetning": "2026-09-05",
     "verdlaun": "",
     "stada": "Í gangi",
-    "uppfaert": "2026-09-05T11:16:22+00:00"
+    "uppfaert": "2026-09-05T11:22:02+00:00"
   },
   "keppendur": [
     {
@@ -18,6 +18,13 @@
       "klubbur": "Golfklúbburinn Setberg",
       "fjarlaegd": 1.815,
       "timi": "11:16"
+    },
+    {
+      "nr": 24,
+      "nafn": "Anna Snædís Sigmarsdóttir",
+      "klubbur": "Golfklúbburinn Keilir",
+      "fjarlaegd": 1.97,
+      "timi": "11:22"
     }
   ]
 }
