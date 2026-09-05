@@ -9,7 +9,7 @@
     "dagsetning": "2026-09-05",
     "verdlaun": "",
     "stada": "Í gangi",
-    "uppfaert": "2026-09-05T12:01:43+00:00"
+    "uppfaert": "2026-09-05T12:14:36+00:00"
   },
   "keppendur": [
     {
@@ -116,6 +116,12 @@
       "nr": 82,
       "nafn": "Elías Már Guðnason",
       "klubbur": "Golfklúbburinn Setberg",
+      "flot": true
+    },
+    {
+      "nr": 99,
+      "nafn": "Davíð Scheving",
+      "klubbur": "Golfklúbburinn Nesklúbburinn",
       "flot": true
     }
   ]
