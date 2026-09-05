@@ -9,7 +9,7 @@
     "dagsetning": "2026-09-05",
     "verdlaun": "",
     "stada": "Í gangi",
-    "uppfaert": "2026-09-05T11:58:28+00:00"
+    "uppfaert": "2026-09-05T12:01:20+00:00"
   },
   "keppendur": [
     {
@@ -104,6 +104,12 @@
       "nr": 77,
       "nafn": "Hjálmar Jónsson",
       "klubbur": "Golfklúbburinn Oddur",
+      "flot": true
+    },
+    {
+      "nr": 80,
+      "nafn": "Valgerður Geirsdóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur",
       "flot": true
     }
   ]
