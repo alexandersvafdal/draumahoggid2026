@@ -28,7 +28,7 @@
   var sia = "", klubburVal = "", leit = "";
   var sedir = null;          // nr sem þegar hafa verið birt sem kláruð -> til að merkja ný högg
   var sidastRaw = "";
-  var klubbarFylltir = false;
+  var klubbaLykill = null;
 
   /* ---------------- gögn ---------------- */
 
@@ -221,27 +221,30 @@
     }).join("");
   }
 
-  function fyllaKlubba(keppendur) {
-    if (klubbarFylltir) return;
+  function fyllaKlubba(spiladir) {
     var talning = {};
-    keppendur.forEach(function (k) { if (k.klubbur) talning[k.klubbur] = (talning[k.klubbur] || 0) + 1; });
-    Object.keys(talning).sort(function (a, b) { return a.localeCompare(b, "is"); }).forEach(function (c) {
+    spiladir.forEach(function (k) { if (k.klubbur) talning[k.klubbur] = (talning[k.klubbur] || 0) + 1; });
+    var lyklar = Object.keys(talning).sort(function (a, b) { return a.localeCompare(b, "is"); });
+    var undirskrift = lyklar.join("|");
+    if (undirskrift === klubbaLykill) return;
+    klubbaLykill = undirskrift;
+    var valid = klubburSel.value;
+    klubburSel.innerHTML = '<option value="">Allir klúbbar</option>';
+    lyklar.forEach(function (c) {
       var o = document.createElement("option");
       o.value = c; o.textContent = c + " (" + talning[c] + ")";
       klubburSel.appendChild(o);
     });
-    klubbarFylltir = true;
+    if (valid && lyklar.indexOf(valid) >= 0) klubburSel.value = valid;
+    else if (valid) { klubburSel.value = ""; klubburVal = ""; }
   }
 
   function teiknaSiur(r) {
-    var val = [
-      ["Allir", "", r.spiladir.length + r.bidur.length],
-      ["Búnir", "spiladir", r.spiladir.length],
-      ["Á teig", "bidur", r.bidur.length],
-      ["Ógilt", "ogilt", r.ogilt.length]
-    ];
-    if (r.hio.length) val.splice(1, 0, ["★ Hola í höggi", "hio", r.hio.length]);
+    var val = [["Allar mælingar", "", r.spiladir.length]];
+    if (r.hio.length) val.push(["★ Hola í höggi", "hio", r.hio.length]);
+    if (r.ogilt.length) val.push(["Ógilt", "ogilt", r.ogilt.length]);
     cfilter.innerHTML = "";
+    if (val.length < 2) return;
     val.forEach(function (v) {
       var b = document.createElement("button");
       b.type = "button";
@@ -256,8 +259,6 @@
     if (klubburVal && nrm(k.klubbur) !== nrm(klubburVal)) return false;
     if (sia === "hio" && k.__stada !== "hio") return false;
     if (sia === "ogilt" && k.__stada !== "ogilt") return false;
-    if (sia === "bidur" && k.__stada !== "bidur") return false;
-    if (sia === "spiladir" && k.__stada === "bidur") return false;
     if (!leit) return true;
     var hey = ((k.nafn || "") + " " + (k.klubbur || "") + " " + (k.athugasemd || "")).toLowerCase();
     return leit.split(/\s+/).filter(Boolean).every(function (w) { return hey.indexOf(w) >= 0; });
@@ -282,9 +283,9 @@
     var keppendur = gogn.keppendur || [];
     var m = gogn.meta || {};
     teiknaHaus(m);
-    fyllaKlubba(keppendur);
 
     var r = radad(keppendur);
+    fyllaKlubba(r.spiladir);
     teiknaHio(r.hio);
     teiknaPall(r.spiladir);
     teiknaSiur(r);
@@ -300,29 +301,23 @@
     sedir = nuSedir;
 
     var syndir = r.spiladir.filter(passar);
-    var bidur = r.bidur.filter(passar);
 
-    var enginnSkradur = keppendur.length === 0;
+    // Ráslistinn er vísvitandi ekki birtur - aðeins keppendur sem búið er að mæla.
     el("list").innerHTML = syndir.length
       ? syndir.map(function (k) { return rada(k, !!nyir[k.nr]); }).join("")
-      : '<p class="empty">' + (enginnSkradur ? "Engir keppendur skráðir enn."
-        : r.spiladir.length === 0 ? "Enginn búinn að slá enn." : "Engin skráning fannst.") + '</p>';
-    el("waitlist").innerHTML = bidur.length
-      ? bidur.map(function (k) { return rada(k, false); }).join("")
-      : '<p class="empty">' + (enginnSkradur ? "Engir keppendur skráðir enn."
-        : r.bidur.length === 0 ? "Allir búnir að slá." : "Engin skráning fannst.") + '</p>';
-
+      : '<p class="empty">' + (r.spiladir.length === 0
+          ? "Engar mælingar skráðar enn." : "Engin mæling fannst.") + '</p>';
     el("nres").textContent = syndir.length + (syndir.length !== r.spiladir.length ? " af " + r.spiladir.length : "");
-    el("nwait").textContent = bidur.length + (bidur.length !== r.bidur.length ? " af " + r.bidur.length : "");
 
-    var alls = keppendur.length, bunir = r.spiladir.length;
+    var maeldir = r.spiladir.length;
     var bestur = r.hio.length ? r.hio[0] : (r.lokid[0] || null);
-    el("count").innerHTML = alls === 0
-      ? "<span>Engir keppendur skráðir enn</span> <em>· bættu þeim við í <code>data/keppni.json</code> eða á skráningarsíðunni</em>"
-      : "<span>" + nf0.format(bunir) + " af " + nf0.format(alls) + " búnir að slá</span>" +
+    el("count").innerHTML = maeldir === 0
+      ? "<span>Keppni er ekki hafin</span> <em>· staðan birtist jafnóðum og mælingar berast</em>"
+      : "<span>" + nf0.format(maeldir) + (maeldir === 1 ? " mæling skráð" : " mælingar skráðar") + "</span>" +
       (bestur ? ' <em>· efst/ur: ' + esc(bestur.nafn) + " – " +
         (bestur.__stada === "hio" ? "hola í höggi" : nfM.format(bestur.fjarlaegd) + " m") + "</em>" : "") +
-      (r.ogilt.length ? ' <em>· ' + r.ogilt.length + " ógild"+(r.ogilt.length===1?"t":"") + "</em>" : "");
+      (r.ogilt.length ? ' <em>· ' + r.ogilt.length +
+        (r.ogilt.length === 1 ? " ógilt högg" : " ógild högg") + "</em>" : "");
 
     var uppf = m.uppfaert ? new Date(m.uppfaert) : null;
     el("foot").innerHTML =

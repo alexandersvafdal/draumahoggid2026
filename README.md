@@ -13,7 +13,7 @@ Einherjaklúbbsins: Poppins, grænt `#0a5e34`, gullnir hápunktar, hvít spjöld
 | `index.html` | Stigataflan – uppfærist sjálfkrafa |
 | `skra.html` | Skráningarform fyrir ritara, býr til `keppni.json` |
 | `config.js` | Gagnaslóð, uppfærslutíðni, merki, meta fyrir CSV |
-| `data/keppni.json` | Gögn keppninnar (**tómt – bættu keppendum við**) |
+| `data/keppni.json` | Ráslisti og mælingar (247 keppendur, þar af 111 með röð á teig) |
 | `assets/style.css`, `assets/app.js` | Útlit og rökfræði |
 
 ## Keyra staðbundið
@@ -47,6 +47,9 @@ Opnaðu svo `http://localhost:8080/`. (`file://` virkar ekki – `fetch` á JSON
 }
 ```
 
+`nr` er **röð á teig** úr ráslistanum. Keppendur án dreginnar raðar eru merktir `varamadur: true`
+og fá númer 112 og upp úr. `fjoldi_hio` er fjöldi holna í höggi á ferlinum, úr upprunalega Excel-skjalinu.
+
 Staða keppanda ræðst af reitunum:
 
 - `hio: true` → **hola í höggi**, deilir 1. sæti og kveikir gullna borðann efst.
@@ -56,13 +59,25 @@ Staða keppanda ræðst af reitunum:
 
 Jafntefli á sömu fjarlægð deila sæti.
 
+### Ráslistinn er ekki birtur
+
+Stigataflan sýnir **aðeins keppendur sem búið er að mæla**. Þeir sem eiga eftir að slá birtast hvergi –
+ekkert „Á teig“ spjald, engin heildartala keppenda, og klúbbasían telur eingöngu mælda keppendur.
+Ráslistinn er samt í `data/keppni.json` svo skráningarsíðan finni alla.
+
+> Athugið: repo-ið er **opið (public)**, svo `data/keppni.json` er sótt af hverjum sem er þótt nöfnin
+> birtist ekki á síðunni. Ef ráslistinn á ekki að vera aðgengilegur þarf annaðhvort að gera repo-ið
+> private eða halda ráslistanum utan þess (t.d. aðeins í `localStorage` skráningarsíðunnar).
+
 ## Að uppfæra stöðuna meðan á keppni stendur
 
 **Leið A – skráningarformið (einfaldast).** Opnaðu `skra.html`:
 
-1. **☰ Líma inn nafnalista** – límdu keppendur inn, eitt nafn í línu (`Nafn, Klúbbur`), til að byggja upp ráslistann.
-2. Sláðu inn fjarlægðir jafnóðum meðan keppnin stendur yfir. Tími fyllist sjálfkrafa við fyrstu skráningu.
+1. Notaðu **síureitinn** til að finna keppanda (nafn, klúbbur eða númer) – listinn er 247 nöfn.
+2. Sláðu inn fjarlægð í metrum. Tími fyllist sjálfkrafa við fyrstu skráningu.
 3. **⬇ Sækja keppni.json**, settu skrána yfir `data/keppni.json`, committaðu og pushaðu.
+
+**☰ Líma inn nafnalista** bætir við eða skiptir út öllum keppendum (eitt nafn í línu, `Nafn, Klúbbur`).
 
 Allir opnir vafrar taka breytinguna upp innan `uppfaerslutidni` (sjálfgefið 15 sek.) án þess að endurhlaða þurfi.
 Breytingar í forminu geymast í `localStorage` þar til þú sækir skrána – lokaður flipi tapar þeim ekki.

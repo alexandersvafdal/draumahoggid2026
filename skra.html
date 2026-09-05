@@ -25,8 +25,9 @@
 <div class="wrap">
   <p class="err" id="err" hidden></p>
   <p class="hint">
-    Skráðu fjarlægð frá holu í metrum (t.d. <b>3,42</b>). Hakaðu við <b>HIH</b> fyrir holu í höggi og
-    <b>Ógilt</b> ef höggið telst ekki (vatn, út fyrir völl). Auður reitur = keppandinn hefur ekki slegið.
+    <b>Nr</b> er röð á teig. Sláðu inn fjarlægð frá holu í metrum (t.d. <b>3,42</b>) fyrir þá sem eru mældir.
+    Hakaðu við <b>HIH</b> fyrir holu í höggi og <b>Ógilt</b> ef höggið telst ekki (vatn, út fyrir völl).
+    Auður reitur = ekkert skráð, og sá keppandi birtist <b>ekki</b> á stigatöflunni.
     Ýttu svo á <b>Sækja keppni.json</b> og settu skrána í <code>data/</code> í repo-inu.
   </p>
 
@@ -50,6 +51,11 @@
       <button class="pfbtn" id="pastereplace" type="button">Skipta út öllum keppendum</button>
       <button class="pfbtn" id="pastecancel" type="button">Hætta við</button>
     </div>
+  </div>
+
+  <div class="controls" style="margin:0 0 14px">
+    <input id="sia" type="search" placeholder="Sía ráslistann – nafn, klúbbur eða númer…" autocomplete="off">
+    <span class="pfbtn" id="siatala" style="cursor:default;pointer-events:none"></span>
   </div>
 
   <div class="form"><table>
@@ -82,14 +88,21 @@
 
   function json() {
     var ut = { meta: Object.assign({}, gogn.meta, { uppfaert: new Date().toISOString() }), keppendur: [] };
+    var þekkt = ["nr", "nafn", "klubbur", "fjoldi_hio", "varamadur", "hio", "ogilt", "fjarlaegd", "timi", "athugasemd"];
     ut.keppendur = gogn.keppendur.map(function (k) {
       var o = { nr: k.nr, nafn: k.nafn };
       if (k.klubbur) o.klubbur = k.klubbur;
+      if (k.fjoldi_hio) o.fjoldi_hio = k.fjoldi_hio;
+      if (k.varamadur) o.varamadur = true;
       if (k.hio === true) o.hio = true;
       else if (k.ogilt === true) o.ogilt = true;
       else if (typeof k.fjarlaegd === "number" && isFinite(k.fjarlaegd)) o.fjarlaegd = k.fjarlaegd;
       if (k.timi) o.timi = k.timi;
       if (k.athugasemd) o.athugasemd = k.athugasemd;
+      // varðveitir alla aðra reiti sem kunna að vera í skránni
+      Object.keys(k).forEach(function (lykill) {
+        if (þekkt.indexOf(lykill) < 0 && lykill.indexOf("__") !== 0) o[lykill] = k[lykill];
+      });
       return o;
     });
     return JSON.stringify(ut, null, 2) + "\n";
@@ -114,6 +127,7 @@
       el("tbody").innerHTML = '<tr><td colspan="9" style="padding:26px;text-align:center;color:var(--muted)">' +
         'Engir keppendur skráðir. Notaðu <b>＋ Bæta við keppanda</b> eða <b>☰ Líma inn nafnalista</b>.</td></tr>';
       syna();
+      el("siatala").textContent = "0 keppendur";
       return;
     }
     el("tbody").innerHTML = gogn.keppendur.map(function (k, i) {
@@ -132,10 +146,16 @@
         '</tr>';
     }).join("");
     syna();
+    beitaSiu();
   }
 
+  function naestaNr() {
+    return gogn.keppendur.reduce(function (m, k) { return Math.max(m, +k.nr || 0); }, 0) + 1;
+  }
+  // nr = röð á teig. Fyllir aðeins í það sem vantar; endurnúmerar aldrei
+  // þá sem fyrir eru, svo ráslistaröðin haldist rétt.
   function endurnumera() {
-    gogn.keppendur.forEach(function (k, i) { k.nr = i + 1; });
+    gogn.keppendur.forEach(function (k) { if (!k.nr) k.nr = naestaNr(); });
   }
 
   el("tbody").addEventListener("input", function (e) {
@@ -160,6 +180,24 @@
     vista();
   });
 
+  function beitaSiu() {
+    var t = (el("sia").value || "").trim().toLowerCase();
+    var ord = t.split(/\s+/).filter(Boolean);
+    var syndar = 0;
+    [].forEach.call(el("tbody").querySelectorAll("tr"), function (tr, i) {
+      var k = gogn.keppendur[i];
+      if (!k) return;
+      var hey = ((k.nr || "") + " " + (k.nafn || "") + " " + (k.klubbur || "")).toLowerCase();
+      var passar = !ord.length || ord.every(function (w) { return hey.indexOf(w) >= 0; });
+      tr.hidden = !passar;
+      if (passar) syndar++;
+    });
+    el("siatala").textContent = ord.length
+      ? syndar + " af " + gogn.keppendur.length
+      : gogn.keppendur.length + " keppendur";
+  }
+  el("sia").addEventListener("input", beitaSiu);
+
   el("tbody").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-del]");
     if (!b) return;
@@ -167,13 +205,12 @@
     var k = gogn.keppendur[i];
     if (!confirm("Eyða " + (k.nafn || "keppanda nr. " + k.nr) + " af listanum?")) return;
     gogn.keppendur.splice(i, 1);
-    endurnumera();
     teikna();
     vista();
   });
 
   el("add").onclick = function () {
-    gogn.keppendur.push({ nr: gogn.keppendur.length + 1, nafn: "", klubbur: "" });
+    gogn.keppendur.push({ nr: naestaNr(), nafn: "", klubbur: "" });
     teikna();
     vista();
     var raðir = el("tbody").querySelectorAll('[data-f="nafn"]');
