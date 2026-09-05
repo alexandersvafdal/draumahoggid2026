@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Draumahöggið 2026 – Staðan í beinni</title>
+<meta name="description" content="Bein staða í Draumahögginu 2026 – eitt högg, eitt tækifæri á holu í höggi.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a5e34'/%3E%3Cpath d='M12 6v20' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M13 7h11l-4 4 4 4H13z' fill='%23b8860b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="topbar"><div class="inner">
+  <img class="logo" id="logo" alt="" onerror="this.style.display='none'">
+  <div>
+    <div class="ttl">Draumahöggið</div>
+    <div class="sub">Staðan í beinni – næst holu vinnur, hola í höggi tekur allt</div>
+  </div>
+  <span class="livepill" id="livepill" title="Uppfærist sjálfkrafa"><span class="dot"></span><span id="livetext">Í beinni</span></span>
+</div></div>
+<div class="accent"></div>
+
+<div class="wrap">
+  <p class="err" id="err" hidden></p>
+
+  <section class="hole" id="hole"></section>
+
+  <section id="hiobox"></section>
+
+  <section class="podium" id="podium"></section>
+
+  <div class="controls">
+    <input id="q" type="search" placeholder="Leita að nafni eða klúbbi…" autocomplete="off">
+    <select id="klubbur"><option value="">Allir klúbbar</option></select>
+    <button class="pfbtn" id="refresh" type="button">↻ Uppfæra</button>
+  </div>
+  <div class="cfilter" id="cfilter"></div>
+
+  <p class="count" id="count">Hleð gögnum…</p>
+
+  <div class="layout">
+    <div class="panel">
+      <h2>Staðan<span class="n" id="nres"></span></h2>
+      <div class="scroll" id="list"></div>
+    </div>
+    <div class="panel wait">
+      <h2>Á teig<span class="n" id="nwait"></span></h2>
+      <div class="scroll" id="waitlist"></div>
+    </div>
+  </div>
+
+  <p class="note" id="foot"></p>
+</div>
+
+<script src="config.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

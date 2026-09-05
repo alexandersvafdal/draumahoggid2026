@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skráning – Draumahöggið 2026</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a5e34'/%3E%3Cpath d='M12 6v20' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M13 7h11l-4 4 4 4H13z' fill='%23b8860b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="topbar"><div class="inner">
+  <img class="logo" id="logo" alt="" onerror="this.style.display='none'">
+  <div>
+    <div class="ttl">Skráning</div>
+    <div class="sub">Aðeins fyrir ritara – vistast í þessum vafra þar til þú sækir skrána</div>
+  </div>
+  <a class="pfbtn" href="index.html" style="margin-left:auto;text-decoration:none">← Stigatafla</a>
+</div></div>
+<div class="accent"></div>
+
+<div class="wrap">
+  <p class="err" id="err" hidden></p>
+  <p class="hint">
+    Skráðu fjarlægð frá holu í metrum (t.d. <b>3,42</b>). Hakaðu við <b>HIH</b> fyrir holu í höggi og
+    <b>Ógilt</b> ef höggið telst ekki (vatn, út fyrir völl). Auður reitur = keppandinn hefur ekki slegið.
+    Ýttu svo á <b>Sækja keppni.json</b> og settu skrána í <code>data/</code> í repo-inu.
+  </p>
+
+  <div class="actions">
+    <button class="pfbtn" id="dl" type="button">⬇ Sækja keppni.json</button>
+    <button class="pfbtn" id="copy" type="button">⧉ Afrita JSON</button>
+    <button class="pfbtn" id="reload" type="button">↻ Sækja aftur af vef</button>
+    <button class="pfbtn" id="clear" type="button">✕ Hreinsa staðbundnar breytingar</button>
+  </div>
+
+  <div class="form"><table>
+    <thead><tr><th>Nr</th><th>Nafn</th><th>Klúbbur</th><th>Fjarlægð (m)</th><th>HIH</th><th>Ógilt</th><th>Tími</th><th>Athugasemd</th></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table></div>
+
+  <textarea class="out" id="out" spellcheck="false" readonly></textarea>
+  <p class="note">Breytingar geymast í <code>localStorage</code> í þessum vafra. Stigataflan les <code>data/keppni.json</code> – hún breytist ekki fyrr en skráin er uppfærð í repo-inu.</p>
+</div>
+
+<script src="config.js"></script>
+<script>
+(function () {
+  "use strict";
+  var CFG = window.DRAUMAHOGG_CONFIG || {};
+  var LYKILL = "draumahoggid-skraning";
+  var el = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var gogn = null;
+
+  el("logo").src = CFG.merki || "";
+  if (!CFG.merki) el("logo").style.display = "none";
+
+  function vista() {
+    try { localStorage.setItem(LYKILL, JSON.stringify(gogn)); } catch (e) {}
+    syna();
+  }
+
+  function json() {
+    var ut = { meta: Object.assign({}, gogn.meta, { uppfaert: new Date().toISOString() }), keppendur: [] };
+    ut.keppendur = gogn.keppendur.map(function (k) {
+      var o = { nr: k.nr, nafn: k.nafn };
+      if (k.klubbur) o.klubbur = k.klubbur;
+      if (k.hio === true) o.hio = true;
+      else if (k.ogilt === true) o.ogilt = true;
+      else if (typeof k.fjarlaegd === "number" && isFinite(k.fjarlaegd)) o.fjarlaegd = k.fjarlaegd;
+      if (k.timi) o.timi = k.timi;
+      if (k.athugasemd) o.athugasemd = k.athugasemd;
+      return o;
+    });
+    return JSON.stringify(ut, null, 2) + "\n";
+  }
+
+  function syna() { el("out").value = json(); }
+
+  function tala(v) {
+    var s = String(v == null ? "" : v).trim().replace(",", ".");
+    if (s === "") return null;
+    var n = parseFloat(s);
+    return isFinite(n) && n >= 0 ? n : null;
+  }
+
+  function nuTimi() {
+    var d = new Date(), p = function (n) { return (n < 10 ? "0" : "") + n; };
+    return p(d.getHours()) + ":" + p(d.getMinutes());
+  }
+
+  function teikna() {
+    el("tbody").innerHTML = gogn.keppendur.map(function (k, i) {
+      return '<tr>' +
+        '<td class="num">' + (k.nr || i + 1) + '</td>' +
+        '<td><input type="text" data-i="' + i + '" data-f="nafn" value="' + esc(k.nafn) + '"></td>' +
+        '<td style="width:110px"><input type="text" data-i="' + i + '" data-f="klubbur" value="' + esc(k.klubbur || "") + '"></td>' +
+        '<td class="dist"><input type="text" inputmode="decimal" data-i="' + i + '" data-f="fjarlaegd" value="' +
+          (typeof k.fjarlaegd === "number" ? String(k.fjarlaegd).replace(".", ",") : "") + '"></td>' +
+        '<td class="chk"><input type="checkbox" data-i="' + i + '" data-f="hio"' + (k.hio ? " checked" : "") + '></td>' +
+        '<td class="chk"><input type="checkbox" data-i="' + i + '" data-f="ogilt"' + (k.ogilt ? " checked" : "") + '></td>' +
+        '<td style="width:86px"><input type="text" data-i="' + i + '" data-f="timi" value="' + esc(k.timi || "") + '"></td>' +
+        '<td class="note"><input type="text" data-i="' + i + '" data-f="athugasemd" value="' + esc(k.athugasemd || "") + '"></td>' +
+        '</tr>';
+    }).join("");
+    syna();
+  }
+
+  el("tbody").addEventListener("input", function (e) {
+    var t = e.target, i = t.getAttribute("data-i"), f = t.getAttribute("data-f");
+    if (i === null) return;
+    var k = gogn.keppendur[+i];
+    if (f === "fjarlaegd") {
+      k.fjarlaegd = tala(t.value);
+      if (k.fjarlaegd !== null && !k.timi) { k.timi = nuTimi(); t.closest("tr").querySelector('[data-f="timi"]').value = k.timi; }
+    } else if (f === "hio" || f === "ogilt") {
+      k[f] = t.checked;
+      if (t.checked) {
+        var hitt = f === "hio" ? "ogilt" : "hio";
+        k[hitt] = false;
+        var box = t.closest("tr").querySelector('[data-f="' + hitt + '"]');
+        if (box) box.checked = false;
+        if (!k.timi) { k.timi = nuTimi(); t.closest("tr").querySelector('[data-f="timi"]').value = k.timi; }
+      }
+    } else {
+      k[f] = t.value.trim();
+    }
+    vista();
+  });
+
+  el("dl").onclick = function () {
+    var b = new Blob([json()], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(b); a.download = "keppni.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  };
+  el("copy").onclick = function () {
+    el("out").removeAttribute("readonly"); el("out").select();
+    try { document.execCommand("copy"); } catch (e) {}
+    if (navigator.clipboard) navigator.clipboard.writeText(json());
+    el("out").setAttribute("readonly", "");
+    el("copy").textContent = "✓ Afritað";
+    setTimeout(function () { el("copy").textContent = "⧉ Afrita JSON"; }, 1500);
+  };
+  el("clear").onclick = function () {
+    if (!confirm("Henda staðbundnum breytingum og sækja gögnin aftur af vefnum?")) return;
+    try { localStorage.removeItem(LYKILL); } catch (e) {}
+    hlada(true);
+  };
+  el("reload").onclick = function () { hlada(true); };
+
+  function hlada(afVef) {
+    if (!afVef) {
+      try {
+        var vistad = localStorage.getItem(LYKILL);
+        if (vistad) { gogn = JSON.parse(vistad); teikna(); return; }
+      } catch (e) {}
+    }
+    fetch("data/keppni.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (g) { gogn = g; gogn.keppendur = gogn.keppendur || []; teikna(); vista(); })
+      .catch(function (e) {
+        el("err").hidden = false;
+        el("err").textContent = "Náði ekki í data/keppni.json (" + e.message + "). Opnaðu síðuna í gegnum vefþjón, ekki file://.";
+      });
+  }
+
+  hlada(false);
+})();
+</script>
+</body>
+</html>
