@@ -9,7 +9,7 @@
     "dagsetning": "2026-09-05",
     "verdlaun": "",
     "stada": "Í gangi",
-    "uppfaert": "2026-09-05T11:32:05+00:00"
+    "uppfaert": "2026-09-05T11:55:12+00:00"
   },
   "keppendur": [
     {
@@ -32,6 +32,13 @@
       "klubbur": "Golfklúbbur Reykjavíkur",
       "fjarlaegd": 3.27,
       "timi": "11:32"
+    },
+    {
+      "nr": 69,
+      "nafn": "Ásgeir Þór Árnason",
+      "klubbur": "Golfklúbburinn Setberg",
+      "fjarlaegd": 1.94,
+      "timi": "11:55"
     }
   ]
 }
