@@ -9,7 +9,7 @@
     "dagsetning": "2026-09-05",
     "verdlaun": "",
     "stada": "Í gangi",
-    "uppfaert": "2026-09-05T12:22:12+00:00"
+    "uppfaert": "2026-09-05T12:25:04+00:00"
   },
   "keppendur": [
     {
@@ -149,6 +149,13 @@
       "nafn": "Jóna Elísabet Jónsdóttir",
       "klubbur": "Golfklúbbur Reykjavíkur",
       "flot": true
+    },
+    {
+      "nr": 112,
+      "nafn": "Björn B Björnsson",
+      "klubbur": "Golfklúbburinn Nesklúbburinn",
+      "flot": true,
+      "timi": "12:25"
     }
   ]
 }

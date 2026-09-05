@@ -9,6 +9,7 @@ Notkun:
     python3 tools/birta.py 31 ogilt "Í vatn"
     python3 tools/birta.py flot 3 5 7 17 29    # merkir að þessir hafi hitt flötina
     python3 tools/birta.py afflot 5            # tekur flatarmerkinguna af
+    python3 tools/birta.py teig 113 "Jón Jónsson"   # gefur keppanda röð á teig
 
 Aðeins keppendur sem eru mældir eða hafa hitt flötina rata í data/stada.json.
 Ráslistinn fer aldrei í git.
@@ -43,6 +44,20 @@ def main():
     g = json.load(open(RAS, encoding="utf-8"))
 
     rok = sys.argv[1:]
+    if rok and rok[0].lower() == "teig":
+        nr, nafn = int(rok[1]), rok[2].strip().lower()
+        ef_til = [k for k in g["keppendur"] if k.get("nr") == nr]
+        if ef_til:
+            sys.exit("Nr %d er þegar %s" % (nr, ef_til[0]["nafn"]))
+        finna = [k for k in g["keppendur"] if nafn in k["nafn"].lower()]
+        if len(finna) != 1:
+            sys.exit("Fann %d keppendur fyrir '%s'%s" % (len(finna), rok[2],
+                     (": " + ", ".join(k["nafn"] for k in finna)) if finna else ""))
+        k = finna[0]
+        print("Röð á teig %d -> %s (%s)" % (nr, k["nafn"], k.get("klubbur", "")))
+        k["nr"] = nr
+        k.pop("varamadur", None)
+        rok = []
     if rok and rok[0].lower() in ("flot", "afflot"):
         setja = rok[0].lower() == "flot"
         eftir = {k.get("nr"): k for k in g["keppendur"]}
