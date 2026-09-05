@@ -9,7 +9,7 @@
     "dagsetning": "2026-09-05",
     "verdlaun": "",
     "stada": "Í gangi",
-    "uppfaert": "2026-09-05T12:19:43+00:00"
+    "uppfaert": "2026-09-05T12:21:23+00:00"
   },
   "keppendur": [
     {
@@ -128,6 +128,20 @@
       "nr": 106,
       "nafn": "Guðlaugur Einarsson",
       "klubbur": "Golfklúbbur Reykjavíkur",
+      "flot": true
+    },
+    {
+      "nr": 107,
+      "nafn": "Gunnlaugur Björnsson",
+      "klubbur": "Golfklúbbur Kópavogs og Garðabæjar",
+      "fjarlaegd": 2.16,
+      "flot": true,
+      "timi": "12:21"
+    },
+    {
+      "nr": 108,
+      "nafn": "Gunnar Andri Þórisson",
+      "klubbur": "Golfklúbburinn Keilir",
       "flot": true
     }
   ]
