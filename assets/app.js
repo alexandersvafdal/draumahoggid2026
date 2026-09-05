@@ -10,8 +10,10 @@
   var el = function (id) { return document.getElementById(id); };
   // Íslenskt talnasnið handvirkt – sumir vafrar hafa ekki is-IS í ICU og myndu skila "1,234.50".
   var thusund = function (heil) { return heil.replace(/\B(?=(\d{3})+(?!\d))/g, "."); };
+  // Tveir aukastafir (sentimetrar), en þrír ef mælingin er nákvæmari - t.d. 181,5 cm.
   var nfM = { format: function (n) {
-    var s = Math.abs(n).toFixed(2).split(".");
+    var aukastafir = (Math.round(Math.abs(n) * 1000) % 10 === 0) ? 2 : 3;
+    var s = Math.abs(n).toFixed(aukastafir).split(".");
     return (n < 0 ? "-" : "") + thusund(s[0]) + "," + s[1];
   } };
   var nf0 = { format: function (n) {
