@@ -55,7 +55,7 @@ Staða keppanda ræðst af reitunum:
 - `hio: true` → **hola í höggi**, deilir 1. sæti og kveikir gullna borðann efst.
 - `fjarlaegd` (metrar, tala) → raðast í vaxandi röð.
 - `ogilt: true` → högg tekið en telst ekki (vatn, út fyrir völl); birtist neðst án sætis.
-- hvorugt → keppandinn hefur ekki slegið og birtist undir **Á teig**.
+- hvorugt → keppandinn hefur ekki slegið og birtist **hvergi** á stigatöflunni.
 
 Jafntefli á sömu fjarlægð deila sæti.
 
