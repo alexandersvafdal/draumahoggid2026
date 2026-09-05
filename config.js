@@ -20,7 +20,7 @@ window.DRAUMAHOGG_CONFIG = {
     vollur: "Nesvöllur, Seltjarnarnesi",
     hola: 9,
     par: 3,
-    lengd_m: null,
+    lengd_m: 103,
     dagsetning: "2026-09-05",
     verdlaun: "",
     stada: "Í gangi"

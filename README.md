@@ -32,7 +32,7 @@ Opnaðu svo `http://localhost:8080/`. (`file://` virkar ekki – `fetch` á JSON
     "titill": "Draumahöggið 2026",
     "undirtitill": "Eitt högg. Eitt tækifæri.",
     "vollur": "Nesvöllur, Seltjarnarnesi",
-    "hola": 9, "par": 3, "lengd_m": 132,
+    "hola": 9, "par": 3, "lengd_m": 103,
     "dagsetning": "2026-09-05",
     "verdlaun": "Bíll frá styrktaraðila fyrir holu í höggi",
     "stada": "Í gangi",
