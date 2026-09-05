@@ -9,7 +9,7 @@
     "dagsetning": "2026-09-05",
     "verdlaun": "",
     "stada": "Í gangi",
-    "uppfaert": "2026-09-05T11:22:02+00:00"
+    "uppfaert": "2026-09-05T11:32:05+00:00"
   },
   "keppendur": [
     {
@@ -25,6 +25,13 @@
       "klubbur": "Golfklúbburinn Keilir",
       "fjarlaegd": 1.97,
       "timi": "11:22"
+    },
+    {
+      "nr": 39,
+      "nafn": "Sigurður Hafsteinsson",
+      "klubbur": "Golfklúbbur Reykjavíkur",
+      "fjarlaegd": 3.27,
+      "timi": "11:32"
     }
   ]
 }
