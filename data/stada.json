@@ -9,7 +9,7 @@
     "dagsetning": "2026-09-05",
     "verdlaun": "",
     "stada": "Í gangi",
-    "uppfaert": "2026-09-05T11:56:32+00:00"
+    "uppfaert": "2026-09-05T11:58:28+00:00"
   },
   "keppendur": [
     {
@@ -91,6 +91,20 @@
       "fjarlaegd": 1.94,
       "flot": true,
       "timi": "11:55"
+    },
+    {
+      "nr": 76,
+      "nafn": "Ólafur Kristjánsson",
+      "klubbur": "Golfklúbburinn Keilir",
+      "fjarlaegd": 3.48,
+      "flot": true,
+      "timi": "11:58"
+    },
+    {
+      "nr": 77,
+      "nafn": "Hjálmar Jónsson",
+      "klubbur": "Golfklúbburinn Oddur",
+      "flot": true
     }
   ]
 }
