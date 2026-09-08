@@ -181,7 +181,8 @@
     ogilt.forEach(function (k) { k.__saeti = null; });
     bidur.forEach(function (k) { k.__saeti = null; });
 
-    return { hio: hio, lokid: lokid, ogilt: ogilt, bidur: bidur, flot: aFlot,
+    var allir = keppendur.slice().sort(function (a, b) { return (a.nr || 0) - (b.nr || 0); });
+    return { hio: hio, lokid: lokid, ogilt: ogilt, bidur: bidur, flot: aFlot, allir: allir,
              spiladir: hio.concat(lokid, ogilt) };
   }
 
@@ -331,6 +332,19 @@
       gildi + '</div>';
   }
 
+  function radaAllir(k) {
+    var undir = [k.klubbur, k.timi ? "kl. " + k.timi : ""].filter(Boolean).map(esc).join(" · ");
+    var gildi;
+    if (k.__stada === "hio") gildi = '<span class="val">HOLA Í HÖGGI</span>';
+    else if (k.__stada === "lokid") gildi = '<span class="val">' + nfM.format(k.fjarlaegd) + '<small>m</small></span>';
+    else if (k.flot === true) gildi = '<span class="val omaeld">Á flöt</span>';
+    else gildi = '<span class="val ekkert">—</span>';
+    return '<div class="row' + (k.__stada === "hio" ? " hio" : "") + '">' +
+      '<div class="rk">' + (k.nr || "–") + '</div>' +
+      '<div><div class="n">' + esc(k.nafn) + '</div><div class="c">' + undir + '</div></div>' +
+      gildi + '</div>';
+  }
+
   function rada(k, nyr) {
     var merki = [];
     if (k.__stada === "hio") merki.push('<span class="tag t-hio">Hola í höggi</span>');
@@ -382,6 +396,12 @@
       : '<p class="empty">' + (r.flot.length === 0
           ? "Enginn hefur hitt flötina enn." : "Enginn fannst.") + '</p>';
     el("nflot").textContent = flotSyndir.length + (flotSyndir.length !== r.flot.length ? " af " + r.flot.length : "");
+
+    var allirSyndir = r.allir.filter(passarLeit);
+    el("allirlist").innerHTML = allirSyndir.length
+      ? allirSyndir.map(radaAllir).join("")
+      : '<p class="empty">Enginn fannst.</p>';
+    el("nallir").textContent = allirSyndir.length + (allirSyndir.length !== r.allir.length ? " af " + r.allir.length : "");
 
     var maeldir = r.spiladir.length;
     var bestur = r.hio.length ? r.hio[0] : (r.lokid[0] || null);

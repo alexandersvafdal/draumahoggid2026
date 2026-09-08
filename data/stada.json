@@ -9,16 +9,31 @@
     "dagsetning": "2026-09-05",
     "verdlaun": "",
     "stada": "Lokið",
-    "uppfaert": "2026-09-08T21:14:26+00:00",
+    "uppfaert": "2026-09-08T21:23:42+00:00",
     "lokid": true,
     "thatttakendur": 112
   },
   "keppendur": [
     {
+      "nr": 1,
+      "nafn": "Þuríður Valdimarsdóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 2,
+      "nafn": "Björn Ólafur Bragason",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
       "nr": 3,
       "nafn": "Birkir Marinósson",
       "klubbur": "Golfklúbbur Grindavíkur",
       "flot": true
+    },
+    {
+      "nr": 4,
+      "nafn": "Sigríður Birna Magnúsdóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur"
     },
     {
       "nr": 5,
@@ -27,10 +42,45 @@
       "flot": true
     },
     {
+      "nr": 6,
+      "nafn": "Elísabet Traustadóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
       "nr": 7,
       "nafn": "Brynjar Ólafsson",
       "klubbur": "Golfklúbbur Suðurnesja",
       "flot": true
+    },
+    {
+      "nr": 8,
+      "nafn": "Sigurður K. Kolbeinsson",
+      "klubbur": "Golfklúbbur Selfoss"
+    },
+    {
+      "nr": 9,
+      "nafn": "Hólmfríður Lillý Ómarsdóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 10,
+      "nafn": "Þóra Björg Róbertsdóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 11,
+      "nafn": "Halldór Einarsson",
+      "klubbur": "Golfklúbbur Sandgerðis"
+    },
+    {
+      "nr": 12,
+      "nafn": "Guðný Hansdóttir",
+      "klubbur": "Golfklúbburinn Oddur"
+    },
+    {
+      "nr": 13,
+      "nafn": "Bergljót Þorsteinsdóttir",
+      "klubbur": "Golfklúbburinn Oddur"
     },
     {
       "nr": 14,
@@ -41,10 +91,50 @@
       "timi": "11:16"
     },
     {
+      "nr": 15,
+      "nafn": "Karl F. Gunnarsson",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 16,
+      "nafn": "Arnór Martin Kristinsson",
+      "klubbur": "Golfklúbbur Mosfellsbæjar"
+    },
+    {
       "nr": 17,
       "nafn": "Ellert Berg Guðjónsson",
       "klubbur": "Golfklúbbur Mosfellsbæjar",
       "flot": true
+    },
+    {
+      "nr": 18,
+      "nafn": "Herdís Sigurjónsdóttir",
+      "klubbur": "Golfklúbburinn Setberg"
+    },
+    {
+      "nr": 19,
+      "nafn": "Ármann Guðjón Valsson",
+      "klubbur": "Golfklúbburinn Keilir"
+    },
+    {
+      "nr": 20,
+      "nafn": "Hreinn Ómar Arason",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 21,
+      "nafn": "Samúel Guðmundsson",
+      "klubbur": "Golfklúbburinn Oddur"
+    },
+    {
+      "nr": 22,
+      "nafn": "Birna Stefnisdóttir",
+      "klubbur": "Golfklúbburinn Öndverðarnesi"
+    },
+    {
+      "nr": 23,
+      "nafn": "Kristinn Árnason",
+      "klubbur": "Golfklúbbur Reykjavíkur"
     },
     {
       "nr": 24,
@@ -55,10 +145,75 @@
       "timi": "11:22"
     },
     {
+      "nr": 25,
+      "nafn": "Jón Árni Kárason",
+      "klubbur": "Golfklúbburinn Keilir"
+    },
+    {
+      "nr": 26,
+      "nafn": "Jóhann Þór Sigurðsson",
+      "klubbur": "Golfklúbburinn Leynir"
+    },
+    {
+      "nr": 27,
+      "nafn": "Axel Þór Rudolfsson",
+      "klubbur": "Golfklúbbur Mosfellsbæjar"
+    },
+    {
+      "nr": 28,
+      "nafn": "Elísabet Gunnarsdóttir",
+      "klubbur": "Golfklúbburinn Setberg"
+    },
+    {
       "nr": 29,
       "nafn": "Linda Björk Bergsveinsdóttir",
       "klubbur": "Golfklúbbur Reykjavíkur",
       "flot": true
+    },
+    {
+      "nr": 30,
+      "nafn": "Haraldur Árnason",
+      "klubbur": "Golfklúbburinn Setberg"
+    },
+    {
+      "nr": 31,
+      "nafn": "Ingiþór Arnar Sigurgíslason",
+      "klubbur": "Golfklúbbur Sandgerðis"
+    },
+    {
+      "nr": 32,
+      "nafn": "Skúli Sigurðsson",
+      "klubbur": "Golfklúbbur Mosfellsbæjar"
+    },
+    {
+      "nr": 33,
+      "nafn": "Herdís Rós Kjartansdóttir",
+      "klubbur": "Golfklúbburinn Keilir"
+    },
+    {
+      "nr": 34,
+      "nafn": "Dagmar Ýr Sigurjónsdóttir",
+      "klubbur": "Golfklúbbur Vatnsleysustrandar"
+    },
+    {
+      "nr": 35,
+      "nafn": "Stefán Viðar Sigtryggsson",
+      "klubbur": "Golfklúbbur Hornafjarðar"
+    },
+    {
+      "nr": 36,
+      "nafn": "Björn Ingi Sigurðsson",
+      "klubbur": "Golfklúbbur Kópavogs og Garðabæjar"
+    },
+    {
+      "nr": 37,
+      "nafn": "Hrafn Loftsson",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 38,
+      "nafn": "Stefán Arason",
+      "klubbur": "Golfklúbbur Fjarðarbyggðar"
     },
     {
       "nr": 39,
@@ -69,10 +224,70 @@
       "timi": "11:32"
     },
     {
+      "nr": 40,
+      "nafn": "Þorsteinn Gíslason",
+      "klubbur": "Golfklúbburinn Oddur"
+    },
+    {
+      "nr": 41,
+      "nafn": "Sigurður Alfreðsson",
+      "klubbur": "Golfklúbburinn Hamar"
+    },
+    {
+      "nr": 42,
+      "nafn": "Heiðrún Líndal Karlsdóttir",
+      "klubbur": "Golfklúbbur Kópavogs og Garðabæjar"
+    },
+    {
+      "nr": 43,
+      "nafn": "Stefán Örn Sigurðsson",
+      "klubbur": "Golfklúbburinn Oddur"
+    },
+    {
+      "nr": 44,
+      "nafn": "Ragnar Ásgeirsson",
+      "klubbur": "Golfklúbburinn Setberg"
+    },
+    {
+      "nr": 45,
+      "nafn": "Ástþór Ingi Gestsson",
+      "klubbur": "Golfklúbbur Grindavíkur"
+    },
+    {
+      "nr": 46,
+      "nafn": "Kristján Lúðvík Möller",
+      "klubbur": "Golfklúbburinn Oddur"
+    },
+    {
       "nr": 47,
       "nafn": "Ármann Viðar Sigurðsson",
       "klubbur": "Golfklúbbur Fjallabyggðar",
       "flot": true
+    },
+    {
+      "nr": 48,
+      "nafn": "Anna Ólöf Sveinbjörnsdóttir",
+      "klubbur": "Golfklúbbur Mosfellsbæjar"
+    },
+    {
+      "nr": 49,
+      "nafn": "Ingimar Jónasson",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 50,
+      "nafn": "Birna Katrín Sigurðardóttir",
+      "klubbur": "Golfklúbburinn Úthlíð"
+    },
+    {
+      "nr": 51,
+      "nafn": "Júlía Eyfjörð Jónsdóttir",
+      "klubbur": "Golfklúbburinn Þorlákshöfn"
+    },
+    {
+      "nr": 52,
+      "nafn": "Hallveig Ragnarsdóttir",
+      "klubbur": "Golfklúbburinn Setberg"
     },
     {
       "nr": 53,
@@ -81,10 +296,80 @@
       "flot": true
     },
     {
+      "nr": 54,
+      "nafn": "Örn Unnarsson",
+      "klubbur": "Golfklúbbur Mosfellsbæjar"
+    },
+    {
+      "nr": 55,
+      "nafn": "Þorgils Ragnarsson",
+      "klubbur": "Golfklúbburinn Keilir"
+    },
+    {
+      "nr": 56,
+      "nafn": "Halldór Óli Kjartansson",
+      "klubbur": "Golfklúbburinn Þorlákshöfn"
+    },
+    {
+      "nr": 57,
+      "nafn": "Helgi Þór Óskarsson",
+      "klubbur": "Golfklúbburinn Setberg"
+    },
+    {
+      "nr": 58,
+      "nafn": "Viðar Engilbertsson",
+      "klubbur": "Golfklúbburinn Leynir"
+    },
+    {
+      "nr": 59,
+      "nafn": "Grétar Magnússon",
+      "klubbur": "Golfklúbburinn Oddur"
+    },
+    {
+      "nr": 60,
+      "nafn": "Gunnar Ingi Elvarsson",
+      "klubbur": "Golfklúbbur Kópavogs og Garðabæjar"
+    },
+    {
+      "nr": 61,
+      "nafn": "Margrét Karen Olgeirsdóttir Ralston",
+      "klubbur": "Golfklúbburinn Setberg"
+    },
+    {
+      "nr": 62,
+      "nafn": "Guðmundur Örn Gylfason",
+      "klubbur": "Nesklúbburinn"
+    },
+    {
+      "nr": 63,
+      "nafn": "Auður Harðardóttir",
+      "klubbur": "Golfklúbburinn Oddur"
+    },
+    {
       "nr": 64,
       "nafn": "Birgir Hrafn Sæmundsson",
       "klubbur": "Golfklúbbur Mosfellsbæjar",
       "flot": true
+    },
+    {
+      "nr": 65,
+      "nafn": "Elín María Sigurðardóttir",
+      "klubbur": "Golfklúbbur Kópavogs og Garðabæjar"
+    },
+    {
+      "nr": 66,
+      "nafn": "Magnús Þórsson",
+      "klubbur": "Golfklúbburinn Keilir"
+    },
+    {
+      "nr": 67,
+      "nafn": "Victor Rafn Viktorsson",
+      "klubbur": "Golfklúbbur Mosfellsbæjar"
+    },
+    {
+      "nr": 68,
+      "nafn": "Eydís Freyja Guðmundsdóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur"
     },
     {
       "nr": 69,
@@ -93,6 +378,36 @@
       "fjarlaegd": 1.94,
       "flot": true,
       "timi": "11:55"
+    },
+    {
+      "nr": 70,
+      "nafn": "Kenneth Breiðfjörð",
+      "klubbur": "Golfklúbbur Ásatúns"
+    },
+    {
+      "nr": 71,
+      "nafn": "Ragnhildur Skúladóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 72,
+      "nafn": "Jónas Halldórsson",
+      "klubbur": "Golfklúbburinn Keilir"
+    },
+    {
+      "nr": 73,
+      "nafn": "Sigurður Ingimundarson",
+      "klubbur": "Golfklúbbur Suðurnesja"
+    },
+    {
+      "nr": 74,
+      "nafn": "Rúnar Laxdal Gunnarsson",
+      "klubbur": "Golfklúbbur Vatnsleysustrandar"
+    },
+    {
+      "nr": 75,
+      "nafn": "Árni Þór Árnason",
+      "klubbur": "Golfklúbburinn Leynir"
     },
     {
       "nr": 76,
@@ -109,10 +424,25 @@
       "flot": true
     },
     {
+      "nr": 78,
+      "nafn": "Hjalti Ævarsson",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 79,
+      "nafn": "Davíð Einar Sigþórsson",
+      "klubbur": "Golfklúbbur Borgarness"
+    },
+    {
       "nr": 80,
       "nafn": "Valgerður Geirsdóttir",
       "klubbur": "Golfklúbbur Reykjavíkur",
       "flot": true
+    },
+    {
+      "nr": 81,
+      "nafn": "Axel Rúnarsson",
+      "klubbur": "Golfklúbbur Reykjavíkur"
     },
     {
       "nr": 82,
@@ -121,10 +451,120 @@
       "flot": true
     },
     {
+      "nr": 83,
+      "nafn": "Ásgeir Jón Guðbjartsson",
+      "klubbur": "Golfklúbburinn Keilir"
+    },
+    {
+      "nr": 84,
+      "nafn": "Ragnheiður Jónasdóttir",
+      "klubbur": "Golfklúbburinn Leynir"
+    },
+    {
+      "nr": 85,
+      "nafn": "Líney Sveinsdóttir",
+      "klubbur": "Golfklúbburinn Oddur"
+    },
+    {
+      "nr": 86,
+      "nafn": "Ægir Vopni Ármannsson",
+      "klubbur": "Golfklúbburinn Oddur"
+    },
+    {
+      "nr": 87,
+      "nafn": "Halldóra Jóhannsdóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 88,
+      "nafn": "Sigríður Björnsdóttir",
+      "klubbur": "Golfklúbburinn Öndverðarnesi"
+    },
+    {
+      "nr": 89,
+      "nafn": "Berglind Þórhallsdóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 90,
+      "nafn": "Gunnar Valdimar Johnsen",
+      "klubbur": "Golfklúbbur Kópavogs og Garðabæjar"
+    },
+    {
+      "nr": 91,
+      "nafn": "Heimir Heimisson",
+      "klubbur": "Golfklúbburinn Hellu"
+    },
+    {
+      "nr": 92,
+      "nafn": "Ólafur Örn Nielsen",
+      "klubbur": "Golfklúbbur Kópavogs og Garðabæjar"
+    },
+    {
+      "nr": 93,
+      "nafn": "Hjörtur Þór Steindórsson",
+      "klubbur": "Golfklúbbur Kópavogs og Garðabæjar"
+    },
+    {
+      "nr": 94,
+      "nafn": "Guðmundur Örn Óskarsson",
+      "klubbur": "Golfklúbburinn Keilir"
+    },
+    {
+      "nr": 95,
+      "nafn": "Halldór Þórólfsson",
+      "klubbur": "Golfklúbburinn Keilir"
+    },
+    {
+      "nr": 96,
+      "nafn": "Páll Sindri Einarsson",
+      "klubbur": "Golfklúbburinn Leynir"
+    },
+    {
+      "nr": 97,
+      "nafn": "Guðmundur Hjálmarsson",
+      "klubbur": "Golfklúbbur Vatnsleysustrandar"
+    },
+    {
+      "nr": 98,
+      "nafn": "Örn Rúnar Magnússon",
+      "klubbur": "Golfklúbburinn Keilir"
+    },
+    {
       "nr": 99,
       "nafn": "Davíð Scheving",
       "klubbur": "Golfklúbburinn Nesklúbburinn",
       "flot": true
+    },
+    {
+      "nr": 100,
+      "nafn": "Kjartan Ólafsson",
+      "klubbur": "Golfklúbbur Mosfellsbæjar"
+    },
+    {
+      "nr": 101,
+      "nafn": "Auður Elisabet Jóhannsdóttir",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 102,
+      "nafn": "Bjarni Kristinsson",
+      "klubbur": "Golfklúbbur Reykjavíkur"
+    },
+    {
+      "nr": 103,
+      "nafn": "Hulda Hallgrímsdóttir",
+      "klubbur": "Golfklúbburinn Oddur"
+    },
+    {
+      "nr": 104,
+      "nafn": "Svana Björg Ólafsdóttir",
+      "klubbur": "Ekki í klúbbi"
+    },
+    {
+      "nr": 105,
+      "nafn": "Viktor Tumi Valdimarsson",
+      "klubbur": "Golfklúbburinn Keilir"
     },
     {
       "nr": 106,
@@ -147,10 +587,20 @@
       "flot": true
     },
     {
+      "nr": 109,
+      "nafn": "Brynjólfur Bjarnason",
+      "klubbur": "Golfklúbbur Kópavogs og Garðabæjar"
+    },
+    {
       "nr": 110,
       "nafn": "Jóna Elísabet Jónsdóttir",
       "klubbur": "Golfklúbbur Reykjavíkur",
       "flot": true
+    },
+    {
+      "nr": 111,
+      "nafn": "Sigurður Þórarinsson",
+      "klubbur": "Golfklúbburinn Oddur"
     },
     {
       "nr": 112,

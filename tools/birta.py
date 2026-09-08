@@ -25,7 +25,11 @@ def maeldur(k):
     return k.get("hio") is True or k.get("ogilt") is True or isinstance(k.get("fjarlaegd"), (int, float))
 
 
-def birtanlegur(k):
+def birtanlegur(k, thatttakendur=0):
+    # Allir sem spiluðu (nr <= fjöldi þátttakenda) rata á vefinn, ásamt hverjum
+    # þeim sem hefur mælingu eða flatarmerkingu.
+    if thatttakendur and isinstance(k.get("nr"), int) and k["nr"] <= thatttakendur:
+        return True
     return maeldur(k) or k.get("flot") is True
 
 
@@ -103,14 +107,15 @@ def main():
     open(RAS, "a", encoding="utf-8").write("\n")
 
     birt = {"meta": g["meta"], "keppendur": []}
+    fjoldi = g["meta"].get("thatttakendur", 0)
     for k in g["keppendur"]:
-        if birtanlegur(k):
+        if birtanlegur(k, fjoldi):
             birt["keppendur"].append({r: k[r] for r in BIRTIR_REITIR if r in k})
     json.dump(birt, open(BIRT, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     open(BIRT, "a", encoding="utf-8").write("\n")
     maeldir = sum(1 for k in birt["keppendur"] if maeldur(k))
-    print("%s: %d mældir, %d á flöt alls (af %d á ráslista)"
-          % (BIRT, maeldir, len(birt["keppendur"]), len(g["keppendur"])))
+    aflot = sum(1 for k in birt["keppendur"] if k.get("flot") or maeldur(k))
+    print("%s: %d birtir - %d mældir, %d á flöt" % (BIRT, len(birt["keppendur"]), maeldir, aflot))
 
 
 if __name__ == "__main__":
