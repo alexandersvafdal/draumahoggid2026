@@ -22,6 +22,8 @@ body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink);line
   background:var(--live-bg);border:1px solid var(--live-bd);border-radius:20px;padding:7px 14px;white-space:nowrap}
 .livepill .dot{width:9px;height:9px;border-radius:50%;background:var(--live);animation:pulse 1.8s ease-in-out infinite}
 .livepill.pause{color:var(--muted);background:var(--brand-tint2);border-color:var(--line)}
+.livepill.bunid{color:var(--brand);background:var(--brand-tint);border-color:#cfe3d5}
+.livepill.bunid .dot{background:var(--brand);animation:none}
 .livepill.pause .dot{background:var(--muted);animation:none}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.75)}}
 @media (prefers-reduced-motion:reduce){.livepill .dot{animation:none}}

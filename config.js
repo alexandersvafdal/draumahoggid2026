@@ -23,6 +23,8 @@ window.DRAUMAHOGG_CONFIG = {
     lengd_m: 103,
     dagsetning: "2026-09-05",
     verdlaun: "",
-    stada: "Í gangi"
+    stada: "Lokið",
+    lokid: true,
+    thatttakendur: 112
   }
 };

@@ -86,6 +86,13 @@
   }
 
   function saekja(handvirkt) {
+    if (window.DRAUMAHOGG_GOGN) {           // sjálfstætt skjal með innbyggðum gögnum
+      var innbyggd = window.DRAUMAHOGG_GOGN;
+      innbyggd.meta = Object.assign({}, CFG.meta || {}, innbyggd.meta || {});
+      window.__GOGN = innbyggd;
+      teikna(innbyggd);
+      return Promise.resolve();
+    }
     var u = SLOD + (SLOD.indexOf("?") < 0 ? "?" : "&") + "t=" + Date.now();
     return fetch(u, { cache: "no-store" })
       .then(function (r) {
@@ -118,9 +125,20 @@
       " kl. " + p2(d.getHours()) + ":" + p2(d.getMinutes());
   }
 
+  function lokid(m) { return (m || {}).lokid === true || (m || {}).stada === "Lokið"; }
+
   function stimpla() {
+    var m = (window.__GOGN || {}).meta || {};
+    var pill = el("livepill");
+    if (lokid(m)) {
+      pill.classList.add("bunid");
+      pill.classList.remove("pause");
+      el("livetext").textContent = "Mótinu er lokið";
+      pill.title = "Lokastaða";
+      return;
+    }
     var d = new Date();
-    el("livepill").classList.remove("pause");
+    pill.classList.remove("pause");
     el("livetext").textContent = "Í beinni · " + p2(d.getHours()) + ":" + p2(d.getMinutes()) + ":" + p2(d.getSeconds());
   }
 
@@ -179,13 +197,17 @@
   function teiknaHaus(m) {
     el("logo").src = CFG.merki || "";
     if (!CFG.merki) el("logo").style.display = "none";
-    document.title = (m.titill || "Draumahöggið") + " – Staðan í beinni";
+    var buid = lokid(m);
+    document.title = (m.titill || "Draumahöggið") + (buid ? " – Lokastaða" : " – Staðan í beinni");
+    var undir = document.querySelector(".topbar .sub");
+    if (undir) undir.textContent = buid ? "Lokastaða" : "Staðan í beinni";
     var dags = m.dagsetning ? m.dagsetning.split("-").reverse().join(".") : "";
     var facts = [
       ["Völlur", m.vollur],
       ["Hola", m.hola],
       ["Par", m.par],
       ["Lengd", m.lengd_m ? nf0.format(m.lengd_m) + " m" : ""],
+      ["Þátttakendur", m.thatttakendur],
       ["Dagsetning", dags],
       ["Staða", m.stada]
     ].filter(function (f) { return f[1] != null && f[1] !== ""; });
@@ -196,6 +218,26 @@
         return '<div class="fact"><div class="k">' + esc(f[0]) + '</div><div class="v">' + esc(f[1]) + '</div></div>';
       }).join("") + '</div>' +
       (m.verdlaun ? '<div class="prize"><b>Verðlaun fyrir holu í höggi:</b> ' + esc(m.verdlaun) + '</div>' : '');
+  }
+
+  function teiknaSigur(m, r) {
+    var box = el("hiobox");
+    var efstir = r.hio.length ? r.hio : r.lokid.filter(function (k) { return k.__saeti === 1; });
+    if (!efstir.length) { box.innerHTML = ""; return true; }
+    var einn = efstir.length === 1;
+    var gildi = function (k) {
+      return k.__stada === "hio" ? "hola í höggi" : nfM.format(k.fjarlaegd) + " m frá holu";
+    };
+    box.innerHTML =
+      '<div class="hio">' +
+      '<div class="kicker">' + (r.hio.length ? "Draumahöggið heppnaðist" : "Lokastaða") + '</div>' +
+      '<h2>' + (einn ? esc(efstir[0].nafn) : efstir.length + " efstir og jafnir") +
+        (r.hio.length ? " fór holu í höggi!" : "") + '</h2>' +
+      '<p>' + (einn
+        ? [efstir[0].klubbur, gildi(efstir[0])].filter(Boolean).map(esc).join(" · ")
+        : efstir.map(function (k) { return esc(k.nafn) + " (" + esc(gildi(k)) + ")"; }).join(", ")) +
+      '</p></div>';
+    return true;
   }
 
   function teiknaHio(hio) {
@@ -311,7 +353,7 @@
 
     var r = radad(keppendur);
     fyllaKlubba(r.flot);
-    teiknaHio(r.hio);
+    if (lokid(m)) { teiknaSigur(m, r); stimpla(); } else teiknaHio(r.hio);
     teiknaPall(r.spiladir);
     teiknaSiur(r);
 
@@ -358,7 +400,9 @@
     el("foot").innerHTML =
       "Draumahöggið · hver keppandi fær eitt högg." +
       (uppf && !isNaN(uppf) ? " Gögn síðast merkt uppfærð " + dagsTimi(uppf) + "." : "") +
-      " Síðan uppfærist sjálfkrafa á " + Math.round(TIDNI / 1000) + " sek. fresti.";
+      (lokid(m) ? " Mótinu er lokið – þetta er lokastaðan."
+                : " Síðan uppfærist sjálfkrafa á " + Math.round(TIDNI / 1000) + " sek. fresti.");
+    if (lokid(m) && timer) { clearInterval(timer); timer = null; }
   }
 
   /* ---------------- viðburðir ---------------- */
@@ -370,10 +414,14 @@
   });
   klubburSel.addEventListener("change", function () { klubburVal = klubburSel.value; teikna(window.__GOGN); });
   el("refresh").addEventListener("click", function () { saekja(true); });
+  if (window.DRAUMAHOGG_GOGN) el("refresh").style.display = "none";
 
-  var timer = setInterval(function () { if (!document.hidden) saekja(false); }, TIDNI);
-  document.addEventListener("visibilitychange", function () { if (!document.hidden) saekja(false); });
-  window.addEventListener("beforeunload", function () { clearInterval(timer); });
+  var timer = window.DRAUMAHOGG_GOGN ? null
+    : setInterval(function () { if (!document.hidden) saekja(false); }, TIDNI);
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden && timer) saekja(false);
+  });
+  window.addEventListener("beforeunload", function () { if (timer) clearInterval(timer); });
 
   saekja(true);
 })();
